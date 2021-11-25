@@ -92,6 +92,7 @@
 						</a>
 						<ul class="sub-menu" aria-expanded="false">
 							<li><a href="<?= site_url('admin/role') ?>">Role</a></li>
+							<li><a href="<?= site_url('admin/penalty') ?>">Penalty</a></li>
 						</ul>
 					</li>
 				<?php else : ?>
