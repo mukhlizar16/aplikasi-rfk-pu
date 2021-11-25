@@ -78,6 +78,12 @@
 							<span>Penugasan</span>
 						</a>
 					</li>
+					<li>
+						<a href="#" class="waves-effect">
+							<i class="dripicons-export"></i>
+							<span>Tabel RFK</span>
+						</a>
+					</li>
 					<li class="menu-title">Pengaturan</li>
 					<li>
 						<a href="javascript: void(0);" class="has-arrow waves-effect">
