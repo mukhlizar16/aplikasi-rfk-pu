@@ -1,0 +1,5 @@
+[05-Jul-2021 08:33:05 UTC] PHP Parse error:  syntax error, unexpected 'none' (T_STRING) in /home/tryguest/public_html/pu/application/controllers/Login.php on line 35
+[05-Jul-2021 08:34:34 UTC] PHP Parse error:  syntax error, unexpected 'none' (T_STRING) in /home/tryguest/public_html/pu/application/controllers/Login.php on line 35
+[08-Jul-2021 21:43:47 UTC] PHP Fatal error:  Call to undefined function must_login() in /home/tryguest/public_html/pu/application/controllers/Admin.php on line 9
+[11-Jul-2021 15:56:40 UTC] PHP Fatal error:  Call to undefined function must_login() in /home/tryguest/public_html/pu/application/controllers/Admin.php on line 9
+[11-Jul-2021 15:57:25 UTC] PHP Fatal error:  Call to undefined function must_login() in /home/tryguest/public_html/pu/application/controllers/Admin.php on line 9
