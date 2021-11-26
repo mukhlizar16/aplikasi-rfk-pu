@@ -749,7 +749,7 @@ class Admin extends CI_Controller
 	public function penugasan()
 	{
 		$data = [
-			'title' => 'e-Mon | Penugasan',
+			'title' => 'Penugasan',
 			'breadcrumb' => 'Penugasan',
 			'pekerjaan' => $this->Admin_model->get_pekerjaan()->result_array(),
 			'konsultan' => $this->Admin_model->get_konsultan()->result_array(),
@@ -793,5 +793,15 @@ class Admin extends CI_Controller
 		} else {
 			echo "No direct script access allowed";
 		}
+	}
+
+	public function table_rfk()
+	{
+		$data = [
+			'title' => 'Tabel RFK',
+			'breadcrumb' => 'Tabel RFK'
+		];
+		$data['item'] = $this->Admin_model->get_data_rfk()->result();
+		$this->template->load('template/master', 'admin/tabel-rfk', $data, false);
 	}
 }
