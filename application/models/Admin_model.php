@@ -328,4 +328,17 @@ class Admin_model extends CI_Model
 		$this->db->where('id', $id);
 		return $this->db->delete('sektor');
 	}
+
+	public function get_data_rfk()
+	{
+		$this->db->select('s.id, k.nilai_kontrak, k.no_kontrak, k.penyedia, p.uraian_pekerjaan, p.pagu, p.lokasi, SUM(pr.bobot_total) as fisik,
+							k.jangka, k.mulai, k.selesai');
+		$this->db->from('scope_konsultan as s');
+		$this->db->join('kontrak as k', 'k.id = s.pekerjaan_id');
+		$this->db->join('pagu as p', 'p.id = k.pagu_id');
+		$this->db->join('rab as r', 'r.pekerjaan_id = s.id');
+		$this->db->join('progress_report as pr', 'pr.rab_id = r.id');
+		$this->db->group_by('r.pekerjaan_id');
+		return $this->db->get();
+	}
 }

@@ -79,7 +79,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="#" class="waves-effect">
+						<a href="<?= site_url('admin/table_rfk') ?>" class="waves-effect">
 							<i class="dripicons-export"></i>
 							<span>Tabel RFK</span>
 						</a>
