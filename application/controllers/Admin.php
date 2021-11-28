@@ -600,7 +600,46 @@ class Admin extends CI_Controller
 			'kontrak' => $this->Admin_model->get_kontrak_data()->result_array()
 		];
 
+		$data['keuangan'] = $this->Admin_model->show_keuangan_data()->result();
 		$this->template->load('template/master', 'admin/realisasi', $data, false);
+	}
+
+	public function store_keuangan()
+	{
+		if ($this->input->is_ajax_request()) {
+			$this->form_validation->set_rules('uraian', 'Paket Pekerjaan', 'trim|required');
+			$this->form_validation->set_rules('nilai', 'Jumlah SP2D', 'trim|required');
+			$this->form_validation->set_rules('nomor', 'Nomor', 'trim|required');
+			$this->form_validation->set_rules('tanggal', 'Tanggal', 'trim|required');
+
+			if ($this->form_validation->run() == FALSE) {
+				$ajax = ['status' => 'error', 'pesan' => validation_errors()];
+			} else {
+				upload_dokumen();
+				if (!$this->upload->do_upload('dokumen')) {
+					$ajax = ['status' => 'upload', 'pesan' => strip_tags($this->upload->display_errors())];
+				} else {
+					$data = [
+						'kontrak_id' => htmlspecialchars($this->input->post('uraian', true)),
+						'jumlah' => str_replace('.', '', htmlspecialchars($this->input->post('nilai', true))),
+						'tanggal' => htmlspecialchars($this->input->post('tanggal', true)),
+						'dokumen' => $this->upload->data('file_name'),
+						'persentase_kontrak' => str_replace(',', '.', htmlspecialchars($this->input->post('persen_kontrak', true))),
+						'persentase_pagu' => str_replace(',', '.', htmlspecialchars($this->input->post('persen_pagu', true))),
+						'operator_id' => $_SESSION['id'],
+					];
+					$simpan = $this->Admin_model->save_data_keuangan($data);
+					if ($simpan) {
+						$ajax = ['status' => 'sukses', 'pesan' => 'Data SP2D berhasil disimpan'];
+					} else {
+						$ajax = ['status' => 'gagal', 'pesan' => 'Data SP2D gagal disimpan'];
+					}
+				}
+			}
+			echo json_encode($ajax);
+		} else {
+			echo "No direct script access allowed";
+		}
 	}
 
 	public function fisik()

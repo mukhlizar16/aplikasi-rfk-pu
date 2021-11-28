@@ -730,9 +730,33 @@ $(document).ready(function () {
 		var uang = $('#progress').cleanVal();
 		var sen = (uang / kontrak) * 100;
 		var sen2 = (uang / pagu) * 100;
-		$('#persentase').val(sen.toFixed(2))
-		$('#persentase2').val(sen2.toFixed(2))
+		$('#persentase').val(sen.toFixed(2).replace('.', ','))
+		$('#persentase2').val(sen2.toFixed(2).replace('.', ','))
 	});
+	$('#form-realisasi').submit(function (e) {
+		e.preventDefault();
+		$.ajax({
+			url: 'store_keuangan',
+			type: 'post',
+			data: new FormData(this),
+			dataType: 'json',
+			processData: false,
+			contentType: false,
+			async: false,
+			cache: false,
+			success: function (res) {
+				if (res.status == 'sukses') {
+					Swal.fire('Sukses !', res.pesan, 'success').then(() => {
+						location.reload()
+					})
+				} else if (res.status == 'error' || res.status == 'upload') {
+					Swal.fire('Peringatan !', res.pesan, 'warning')
+				} else {
+					Swal.fire('Gagal !', res.pesan, 'error')
+				}
+			}
+		})
+	})
 
 	// fisik
 	$('#btn-add-fisik').click(function () {

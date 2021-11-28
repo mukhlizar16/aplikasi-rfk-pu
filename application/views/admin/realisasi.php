@@ -10,20 +10,42 @@
 						</div>
 
 						<div class="mt-2 table-responsive">
-							<table class="table table-striped table-hover" id="table-realisasi">
+							<table class="table table-bordered" id="table-realisasi">
 								<thead>
 									<tr>
-										<th>No</th>
-										<th>Uraian Pekerjaan</th>
-										<th>Nilai Kontrak</th>
-										<th>Nomor Kontrak</th>
-										<th>Tanggal Kontrak</th>
-										<th>Jangka Waktu</th>
-										<th>Tanggal Mulai</th>
-										<th>Tanggal Selesai</th>
-										<th>Penyedia</th>
+										<th class="text-center" width=5%>No</th>
+										<th class="text-center">Uraian Pekerjaan</th>
+										<th class="text-center">Nomor</th>
+										<th class="text-center">Jumlah SP2D</th>
+										<th class="text-center">Tanggal</th>
+										<th class="text-center" nowrap>% Pagu</th>
+										<th class="text-center" nowrap>% Kontrak</th>
+										<th class="text-center">Dokumen</th>
+										<th class="text-center" width="10%">Aksi</th>
 									</tr>
 								</thead>
+								<tbody>
+									<?php $no = 1;
+									foreach ($keuangan as $k) : ?>
+										<tr>
+											<td class="text-center"><?= $no++ ?></td>
+											<td><?= $k->paket ?></td>
+											<td class="text-center"><?= $k->nomor ?></td>
+											<td nowrap><?= rupiah($k->jumlah) ?></td>
+											<td class="text-center" nowrap><?= date('d-m-Y', strtotime($k->tanggal)) ?></td>
+											<td class="text-center"><?= str_replace('.', ',', $k->persentase_kontrak) ?></td>
+											<td class="text-center"><?= str_replace('.', ',', $k->persentase_pagu) ?></td>
+											<td class="text-center">
+												<a href="<?= base_url() ?>assets/upload/keuangan/<?= $k->dokumen ?>" target="_blank">
+													<img src="<?= base_url() ?>assets/admin/images/pdf.png" alt="pdf" width="40px">
+												</a>
+											</td>
+											<td class="text-center" width="10%">
+												<button class="btn btn-sm btn-danger">Hapus</button>
+											</td>
+										</tr>
+									<?php endforeach; ?>
+								</tbody>
 							</table>
 						</div>
 					</div>
@@ -41,7 +63,7 @@
 				<h5 class="modal-title" id="modalRealisasiTitle">Tambah Realisasi Keuangan (Input SP2D)</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
-			<form id="form-realisasi">
+			<form id="form-realisasi" enctype="multipart/form-data">
 				<div class="modal-body">
 					<div class="form-group row">
 						<label for="" class="col-form-label col-md-3">Uraian Pekerjaan</label>
@@ -98,7 +120,7 @@
 						<label for="" class="col-form-label col-md-3">Persen Kontrak</label>
 						<div class="col-md-3">
 							<div class="input-group">
-								<input type="text" class="form-control" id="persentase" name="persen_kontrak">
+								<input type="text" class="form-control" id="persentase" name="persen_kontrak" readonly>
 								<span class="input-group-text">%</span>
 							</div>
 						</div>
@@ -108,7 +130,7 @@
 						<label for="" class="col-form-label col-md-3">Persen Pagu</label>
 						<div class="col-md-3">
 							<div class="input-group">
-								<input type="text" class="form-control" id="persentase2" name="persen_pagu">
+								<input type="text" class="form-control" id="persentase2" name="persen_pagu" readonly>
 								<span class="input-group-text">%</span>
 							</div>
 						</div>

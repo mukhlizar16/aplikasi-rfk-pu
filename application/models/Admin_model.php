@@ -396,4 +396,18 @@ class Admin_model extends CI_Model
 		$this->db->group_by('r.pekerjaan_id');
 		return $this->db->get();
 	}
+
+	public function show_keuangan_data()
+	{
+		$this->db->select('k.*, p.uraian_pekerjaan as paket');
+		$this->db->from('keuangan as k');
+		$this->db->join('kontrak as r', 'r.id = k.kontrak_id');
+		$this->db->join('pagu as p', 'p.id = r.pagu_id');
+		return $this->db->get();
+	}
+
+	public function save_data_keuangan($data)
+	{
+		return $this->db->insert('keuangan', $data);
+	}
 }

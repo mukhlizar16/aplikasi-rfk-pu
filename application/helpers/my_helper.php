@@ -87,3 +87,13 @@ function get_abjad_kecil($index)
 	$abjad = array(1 => 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');
 	return $abjad[$index];
 }
+
+function upload_dokumen($name = '')
+{
+	$ci = &get_instance();
+	$config['upload_path'] = './assets/upload/keuangan/';
+	$config['allowed_types'] = 'pdf|PDF|doc|docx|xls|xlsx|jpg|png';
+	$config['max_size'] = 10048;
+	$config['file_name'] = $name != '' ? $name : 'sp2d-' . strtotime(date('Y-m-d H:i:s'));
+	$ci->load->library('upload', $config);
+}
