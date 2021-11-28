@@ -98,30 +98,6 @@
 									</thead>
 								</thead>
 								<tbody>
-									<!-- <?php foreach ($header as $h) : ?>
-										<tr>
-											<td class="judul" colspan="12">Divisi <?= $h->id . '. ' . $h->divisi ?></td>
-										</tr>
-										<?php $no = 1;
-												foreach ($progres as $r) : ?>
-											<?php if ($r->divisi_id == $h->id) : ?>
-												<tr>
-													<td><?= $no++ ?></td>
-													<td><?= $r->nama_seksi ?></td>
-													<td class="text-center"><?= $r->satuan ?></td>
-													<td class="text-center"><?= $r->vol_sebelum ?? '-' ?></td>
-													<td class="text-center"><?= $r->jlh_harga_sebelum ?? '-' ?></td>
-													<td class="text-center"><?= $r->bobot_sebelum ?? '-' ?></td>
-													<td class="text-center"><?= $r->vol_sekarang ?? '-' ?></td>
-													<td class="text-center" nowrap><?= rupiah($r->jlh_harga_sekarang) ?? '-' ?></td>
-													<td class="text-center"><?= $r->bobot_sekarang ?? '-' ?></td>
-													<td class="text-center"><?= ($r->vol_sebelum + $r->vol_sekarang) ?? '-' ?></td>
-													<td class="text-center" nowrap><?= (rupiah($r->jlh_harga_sebelum + $r->jlh_harga_sekarang)) ?? '-' ?></td>
-													<td class="text-center"><?= ($r->bobot_sebelum + $r->bobot_sekarang) ?? '-' ?></td>
-												</tr>
-											<?php endif ?>
-										<?php endforeach ?>
-									<?php endforeach ?> -->
 								</tbody>
 							</table>
 						</div>

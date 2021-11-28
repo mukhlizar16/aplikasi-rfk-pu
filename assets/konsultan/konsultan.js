@@ -139,14 +139,14 @@ $(document).ready(function () {
 			dataType: 'json',
 			success: function (data) {
 				$('#table-progres').find('tbody').empty();
-				var array = ['70', '71', '72', '73', '74', '75', '76', '77', '78', '79', '80'];
+				// var array = ['70', '71', '72', '73', '74', '75', '76', '77', '78', '79', '80'];
 				var header = data.header;
 				var isi = data.progres;
 				var jlh = data.jumlah;
 				var akhir = data.total;
 				var pajak = (akhir.total_akhir * 0.1).toFixed(2);
 				var p = akhir.total_akhir * 0.1;
-				var harga_total = (akhir.total_akhir + p);
+				//var harga_total = (akhir.total_akhir + p);
 				var tr = '';
 				for (var i = 0; i < header.length; i++) {
 					var nd = i + 1;
@@ -156,10 +156,17 @@ $(document).ready(function () {
 							var no = j + 1;
 							tr += '<tr>' +
 								'<td class="text-center">' + no + '</td>';
-							if ($.inArray(isi[j].seksi_id, array) == 1) {
-								tr += '<td>' + isi[j].seksi_lain + '</td>';
-							} else {
+							// if ($.inArray(isi[j].seksi_id, array) == 1) {
+							// 	tr += '<td>' + isi[j].seksi_lain + '</td>';
+							// } else {
+							// 	tr += '<td>' + isi[j].nama_seksi + '</td>';
+							// }
+							if (isi[j].nama_seksi == 'Lainnya' && isi[j].cabang_seksi_lainnya != null) {
+								tr += '<td>' + isi[j].cabang_seksi_lain + '</td>';
+							} else if (isi[j].nama_seksi != 'Lainnya') {
 								tr += '<td>' + isi[j].nama_seksi + '</td>';
+							} else {
+								tr += '<td>' + isi[j].seksi_lain + '</td>';
 							}
 							tr += '<td class="text-center">' + isi[j].satuan + '</td>' +
 								'<td class="text-center">' + isi[j].vol_sebelum + ' </td>' +

@@ -801,6 +801,12 @@ class Admin extends CI_Controller
 			'title' => 'Tabel RFK',
 			'breadcrumb' => 'Tabel RFK'
 		];
+		$data['dinas'] = $this->Admin_model->count_all_value()->row();
+		$data['program'] = $this->Admin_model->get_program_id()->result();	// subkegiatan
+		$data['kegiatan'] = $this->Admin_model->get_kegiatan_id()->result();	// subkegiatan
+		$data['subkegiatan'] = $this->Admin_model->get_subkegiatan_id()->result();	// subkegiatan
+		// var_dump($data['kegiatan']);
+		// die();
 		$data['item'] = $this->Admin_model->get_data_rfk()->result();
 		$this->template->load('template/master', 'admin/tabel-rfk', $data, false);
 	}

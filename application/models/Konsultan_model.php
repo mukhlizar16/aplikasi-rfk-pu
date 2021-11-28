@@ -53,6 +53,8 @@ class Konsultan_model extends CI_Model
         if ($sektor == 2) {
             $this->db->group_by('r.seksi_lain');
         }
+        $this->db->order_by('r.id', 'asc');
+
         return $this->db->get();
     }
 
@@ -142,7 +144,7 @@ class Konsultan_model extends CI_Model
                             ROUND(p.bobot_sebelum, 2) as bobot_sebelum, ROUND(p.vol_sekarang, 2) as vol_sekarang, 
                             ROUND(p.jlh_harga_sekarang, 2) as jlh_harga_sekarang, ROUND(p.bobot_sekarang, 2) as bobot_sekarang, 
                             ROUND(p.vol_total, 2) as vol_total, ROUND(p.harga_total, 2) as harga_total, ROUND(p.bobot_total, 2) as bobot_total, 
-                            r.divisi_id, r.satuan, r.seksi_id, s.nama_seksi, r.seksi_lain');
+                            r.divisi_id, r.satuan, r.seksi_id, s.nama_seksi, r.seksi_lain, r.cabang_seksi_lain');
         $this->db->from('progress_report as p');
         $this->db->join('rab as r', 'r.id = p.rab_id', 'left');
         $this->db->join('seksi as s', 's.id = r.seksi_id', 'left');

@@ -329,15 +329,70 @@ class Admin_model extends CI_Model
 		return $this->db->delete('sektor');
 	}
 
+	public function count_all_value()
+	{
+		return $this->db->query('
+		SELECT SUM(p.pagu) as pagu, SUM(k.nilai_kontrak) as kontrak
+		FROM kontrak as k
+		JOIN pagu as p ON p.id = k.pagu_id
+        JOIN scope_konsultan as sc ON sc.pekerjaan_id = k.id
+	');
+	}
+
+	public function get_program_id()
+	{
+		return $this->db->query('
+		SELECT pg.id, pg.nama_program, sk.kegiatan_id, kg.id as id_kegiatan, kg.nama_kegiatan , sk.nama_subkegiatan, p.subkegiatan_id, SUM(p.pagu) as pagu, SUM(k.nilai_kontrak) as kontrak
+		FROM kontrak as k
+		JOIN pagu as p ON p.id = k.pagu_id
+        JOIN scope_konsultan as sc ON sc.pekerjaan_id = k.id
+		JOIN subkegiatan as sk ON sk.id = p.subkegiatan_id
+		JOIN kegiatan as kg ON kg.id = sk.kegiatan_id
+		JOIN program as pg ON pg.id = kg.program_id
+		GROUP BY pg.id
+		ORDER BY pg.nama_program ASC
+		');
+	}
+
+	public function get_kegiatan_id()
+	{
+		return $this->db->query('
+		SELECT sk.kegiatan_id, kg.id, kg.program_id, kg.nama_kegiatan, sk.nama_subkegiatan, p.subkegiatan_id, SUM(p.pagu) AS pagu, SUM(k.nilai_kontrak) AS kontrak
+		FROM kontrak AS k
+		JOIN pagu AS p ON p.id = k.pagu_id
+		JOIN subkegiatan AS sk ON sk.id = p.subkegiatan_id
+		JOIN kegiatan AS kg	ON kg.id = sk.kegiatan_id
+		JOIN scope_konsultan AS sc ON sc.pekerjaan_id = k.id
+		GROUP BY kg.id
+		');
+	}
+
+	public function get_subkegiatan_id()
+	{
+		return $this->db->query('
+		SELECT sk.id, sk.nama_subkegiatan, pg.id as idp, sk.kegiatan_id as idk, p.subkegiatan_id, SUM(p.pagu) as pagu, SUM(k.nilai_kontrak) as kontrak
+		FROM kontrak as k
+		JOIN pagu as p ON p.id = k.pagu_id
+		JOIN scope_konsultan as sc ON sc.pekerjaan_id = k.id
+		JOIN subkegiatan as sk ON sk.id = p.subkegiatan_id
+		JOIN kegiatan as kg ON kg.id = sk.kegiatan_id
+		JOIN program as pg ON pg.id = kg.program_id
+		GROUP BY p.subkegiatan_id
+		');
+	}
+
 	public function get_data_rfk()
 	{
 		$this->db->select('s.id, k.nilai_kontrak, k.no_kontrak, k.penyedia, p.uraian_pekerjaan, p.pagu, p.lokasi, SUM(pr.bobot_total) as fisik,
-							k.jangka, k.mulai, k.selesai');
+							k.jangka, k.mulai, k.selesai, sk.id as subkeg, kg.id as idk, pg.id as idp');
 		$this->db->from('scope_konsultan as s');
 		$this->db->join('kontrak as k', 'k.id = s.pekerjaan_id');
 		$this->db->join('pagu as p', 'p.id = k.pagu_id');
 		$this->db->join('rab as r', 'r.pekerjaan_id = s.id');
 		$this->db->join('progress_report as pr', 'pr.rab_id = r.id');
+		$this->db->join('subkegiatan as sk', 'sk.id = p.subkegiatan_id');
+		$this->db->join('kegiatan as kg', 'kg.id = sk.kegiatan_id');
+		$this->db->join('program as pg', 'pg.id = kg.program_id');
 		$this->db->group_by('r.pekerjaan_id');
 		return $this->db->get();
 	}
