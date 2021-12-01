@@ -62,7 +62,7 @@
 
 					<div class="dropdown d-inline-block">
 						<button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<img class="rounded-circle header-profile-user" src="<?= base_url() ?>assets/admin/images/users/avatar.png" alt="Header Avatar">
+							<img class="rounded-circle header-profile-user" src="<?= base_url() ?>assets/admin/images/users/<?= role() == 1 ? 'woman.png' : 'avatar.png' ?>" alt="Header Avatar">
 							<span class="d-none d-xl-inline-block ms-1"><?= $_SESSION['nama'] ?></span>
 							<i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
 						</button>

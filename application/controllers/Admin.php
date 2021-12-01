@@ -548,7 +548,8 @@ class Admin extends CI_Controller
 			'breadcrumb' => 'Kontrak',
 			'pagu' => $this->Admin_model->show_pagu_data()->result_array()
 		];
-
+		// var_dump($data['pagu']);
+		// die();
 		$data['kontrak'] = $this->Admin_model->get_kontrak_data()->result_array();
 		$this->template->load('template/master', 'admin/kontrak', $data, false);
 	}
@@ -622,6 +623,7 @@ class Admin extends CI_Controller
 					$data = [
 						'kontrak_id' => htmlspecialchars($this->input->post('uraian', true)),
 						'jumlah' => str_replace('.', '', htmlspecialchars($this->input->post('nilai', true))),
+						'nomor' => htmlspecialchars($this->input->post('nomor', true)),
 						'tanggal' => htmlspecialchars($this->input->post('tanggal', true)),
 						'dokumen' => $this->upload->data('file_name'),
 						'persentase_kontrak' => str_replace(',', '.', htmlspecialchars($this->input->post('persen_kontrak', true))),
@@ -635,6 +637,27 @@ class Admin extends CI_Controller
 						$ajax = ['status' => 'gagal', 'pesan' => 'Data SP2D gagal disimpan'];
 					}
 				}
+			}
+			echo json_encode($ajax);
+		} else {
+			echo "No direct script access allowed";
+		}
+	}
+
+	public function destroy_realisasi()
+	{
+		if ($this->input->is_ajax_request()) {
+			$id = $this->input->post('id', true);
+			$file = $this->input->post('file', true);
+			$target = './assets/upload/keuangan/' . $file;
+			if (is_readable($target)) :
+				unlink($target);
+			endif;
+			$hapus = $this->Admin_model->delete_realisasi($id);
+			if ($hapus) {
+				$ajax = ['status' => 'sukses', 'pesan' => 'Data realisasi keuangan berhasil dihapus'];
+			} else {
+				$ajax = ['status' => 'gagal', 'pesan' => 'Data realisasi keuangan gagal dihapus'];
 			}
 			echo json_encode($ajax);
 		} else {

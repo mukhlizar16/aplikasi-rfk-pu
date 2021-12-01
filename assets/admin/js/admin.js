@@ -702,6 +702,7 @@ $(document).ready(function () {
 	});
 
 	// realisasi
+	$('#pekerjaan-realisasi, #bulan-realisasi').select2();
 	$('#btn-add-realisasi').click(function () {
 		$('#addRealisasiModal').modal('show')
 	});
@@ -841,6 +842,32 @@ $(document).ready(function () {
 			}
 		})
 	});
+	$('#table-realisasi').on('click', '#btn-hapus-realisasi', function () {
+		var id = $(this).closest('tr').find('#btn-hapus-realisasi').data('id');
+		var file = $(this).closest('tr').find('#btn-hapus-realisasi').data('file');
+		$('#delRealisasiModal').modal('show');
+		$('#id-del-realisasi').val(id);
+		$('#file-realisasi').val(file);
+	});
+	$('#form-hapus-realisasi').submit(function (e) {
+		e.preventDefault();
+		$.ajax({
+			url: 'destroy_realisasi',
+			type: 'post',
+			data: $(this).serialize(),
+			dataType: 'json',
+			success: function (res) {
+				if (res.status == 'sukses') {
+					$('#delRealisasiModal').modal('hide');
+					Swal.fire('Sukses !', res.pesan, 'success').then(() => {
+						location.reload();
+					})
+				} else {
+					Swal.fire('Gagal !', res.pesan, 'error')
+				}
+			}
+		})
+	})
 
 	// datatables
 	$('#tabel-program').DataTable({
@@ -1033,11 +1060,31 @@ $(document).ready(function () {
 			}
 		},
 	});
+	$('#table-realisasi').DataTable({
+		language: {
+			sEmptyTable: "Tidak ada data yang tersedia pada tabel ini",
+			sProcessing: "Sedang memproses...",
+			sLengthMenu: "Tampilkan _MENU_ data",
+			sZeroRecords: "Tidak ditemukan data yang sesuai",
+			sInfo: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+			sInfoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
+			sInfoFiltered: "(disaring dari _MAX_ data keseluruhan)",
+			sInfoPostFix: "",
+			sSearch: "Cari:",
+			sUrl: "",
+			oPaginate: {
+				sFirst: "Pertama",
+				sPrevious: "&lt",
+				sNext: "&gt",
+			}
+		},
+	});
 
 	// tooltip
 	$('body').tooltip({
 		selector: '[data-toggle="tooltip"]'
 	});
+
 
 	/* graph */
 	Highcharts.chart('chart', {

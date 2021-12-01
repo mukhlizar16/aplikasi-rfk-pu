@@ -4,9 +4,41 @@
 			<div class="col-lg-12">
 				<div class="card">
 					<div class="card-body">
-						<div class="mb-3">
+						<div class="mb-2">
 							<button class="btn btn-primary" id="btn-add-realisasi">Tambah Data
 							</button>
+						</div>
+						<hr>
+						<div class="mb-3">
+							<form action="<?= site_url('admin/realisasi_keuangan') ?>" method="post">
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group row mb-3">
+											<label for="pekerjaan" class="form-label col-md-4">Paket Pekerjaan :</label>
+											<div class="col-md-8">
+												<select name="pekerjaan" id="pekerjaan-realisasi" class="form-control select2">
+													<option value="">--Pilih--</option>
+
+												</select>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label for="bulan" class="form-label col-md-4">Bulan ke :</label>
+											<div class="col-md-8">
+												<select name="bulan" id="bulan-realisasi" class="form-control select2">
+													<option value="">--Pilih--</option>
+													<?php for ($i = 1; $i <= 12; $i++) : ?>
+														<option value="<?= $i ?>"><?= $i ?></option>
+													<?php endfor; ?>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<button class="btn btn-success waves-effect waves-light" type="submit">Tampilkan</button>
+									</div>
+								</div>
+							</form>
 						</div>
 
 						<div class="mt-2 table-responsive">
@@ -18,8 +50,8 @@
 										<th class="text-center">Nomor</th>
 										<th class="text-center">Jumlah SP2D</th>
 										<th class="text-center">Tanggal</th>
-										<th class="text-center" nowrap>% Pagu</th>
 										<th class="text-center" nowrap>% Kontrak</th>
+										<th class="text-center" nowrap>% Pagu</th>
 										<th class="text-center">Dokumen</th>
 										<th class="text-center" width="10%">Aksi</th>
 									</tr>
@@ -41,7 +73,7 @@
 												</a>
 											</td>
 											<td class="text-center" width="10%">
-												<button class="btn btn-sm btn-danger">Hapus</button>
+												<button class="btn btn-sm btn-danger" id="btn-hapus-realisasi" data-id="<?= $k->id ?>" data-file="<?= $k->dokumen ?>">Hapus</button>
 											</td>
 										</tr>
 									<?php endforeach; ?>
@@ -141,6 +173,32 @@
 					</button>
 					<button type="submit" class="btn btn-primary waves-effect waves-light" id="btn-submit-realisasi">
 						Simpan
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<!-- Modal hapus -->
+<div class="modal fade" id="delRealisasiModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="modalRealisasiTitle">Yakin menghapus ?</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<form id="form-hapus-realisasi">
+				<div class="modal-body">
+					<p>Setelah dihapus, data tidak dapat dikembalikan lagi.</p>
+					<input type="hidden" name="id" id="id-del-realisasi" class="form-control">
+					<input type="hidden" name="file" id="file-realisasi" class="form-control">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Batal
+					</button>
+					<button type="submit" class="btn btn-danger waves-effect waves-light">
+						Hapus
 					</button>
 				</div>
 			</form>

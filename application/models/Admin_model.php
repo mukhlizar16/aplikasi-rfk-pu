@@ -202,6 +202,7 @@ class Admin_model extends CI_Model
 		$this->db->join('subkegiatan as s', 's.id = p.subkegiatan_id', 'LEFT');
 		$this->db->join('kegiatan as g', 'g.id = s.kegiatan_id', 'LEFT');
 		$this->db->join('program as r', 'r.id = g.program_id', 'LEFT');
+		$this->db->order_by('k.tgl_kontrak', 'desc');
 		return $this->db->get();
 	}
 
@@ -409,5 +410,16 @@ class Admin_model extends CI_Model
 	public function save_data_keuangan($data)
 	{
 		return $this->db->insert('keuangan', $data);
+	}
+
+	public function delete_realisasi($id)
+	{
+		$this->db->where('id', $id);
+		$query = $this->db->delete('keuangan');
+		if ($query) {
+			return $this->db->query('ALTER TABLE keuangan AUTO_INCREMENT=1');
+		} else {
+			return false;
+		}
 	}
 }

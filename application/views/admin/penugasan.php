@@ -68,7 +68,7 @@
                     </div>
                     <br>
                     <div class="form-group row">
-                        <label class="col-md-4 col-form-label" for="divisi">Konsultan <span class="text-danger">*</span>
+                        <label class="col-md-4 col-form-label" for="divisi">Petugas (Konsultan/Operator) <span class="text-danger">*</span>
                         </label>
                         <div class="col-md-8">
                             <select name="konsultan" id="konsultan-tugas" class="form-control" required>
