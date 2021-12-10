@@ -415,6 +415,9 @@ class Admin extends CI_Controller
 		$data['subkegiatan'] = $this->Admin_model->get_subkegiatan()->result_array();
 		$data['pagu'] = $this->Admin_model->show_pagu_data()->result_array();
 		$data['satuan'] = $this->Admin_model->get_satuan()->result_array();
+		$data['total'] = $this->Admin_model->get_total_pagu()->result();
+		// var_dump($data['total']);
+		// die();
 		$this->template->load('template/master', 'admin/pagu', $data, false);
 	}
 
@@ -430,6 +433,7 @@ class Admin extends CI_Controller
 				'satuan_id' => $_POST['satuan'],
 				'pagu' => str_replace($array, '', $_POST['pagu']),
 				'jenis_id' => $_POST['jenis'],
+				'sumber' => $_POST['sumber'],
 				'tanggal' => date('Y-m-d H:i:s')
 			];
 			/*var_dump($data);die();*/
@@ -533,6 +537,7 @@ class Admin extends CI_Controller
 				'kegiatan' => $cari['kegiatan'],
 				'pagu' => $cari['pagu'],
 				'sub' => $cari['sub'],
+				'nilai' => $cari['nilai_kontrak']
 			];
 
 			echo json_encode($data);
@@ -579,6 +584,22 @@ class Admin extends CI_Controller
 			echo json_encode($ajax);
 		} else {
 			echo 'No direct script access allowed';
+		}
+	}
+
+	public function destroy_kontrak()
+	{
+		if ($this->input->is_ajax_request()) {
+			$id = $this->input->post('id', true);
+			$del = $this->Admin_model->delete_kontrak($id);
+			if ($del) {
+				$ajax = ['status' => 'sukses', 'pesan' => 'Data kontrak berhasil dihapus'];
+			} else {
+				$ajax = ['status' => 'gagal', 'pesan' => 'Data kontrak gagal dihapus'];
+			}
+			echo json_encode($ajax);
+		} else {
+			echo "No direct script access allowed";
 		}
 	}
 
@@ -867,9 +888,11 @@ class Admin extends CI_Controller
 		$data['program'] = $this->Admin_model->get_program_id()->result();	// subkegiatan
 		$data['kegiatan'] = $this->Admin_model->get_kegiatan_id()->result();	// subkegiatan
 		$data['subkegiatan'] = $this->Admin_model->get_subkegiatan_id()->result();	// subkegiatan
-		// var_dump($data['kegiatan']);
-		// die();
 		$data['item'] = $this->Admin_model->get_data_rfk()->result();
+		$data['keuangan'] = $this->Admin_model->get_keuangan_data()->result();
+		$data['fisik'] = $this->Admin_model->get_progres_data()->result();
+		// print_r($data['program']);
+		// die();
 		$this->template->load('template/master', 'admin/tabel-rfk', $data, false);
 	}
 }

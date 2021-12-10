@@ -4,6 +4,15 @@
 			<div class="col-lg-12">
 				<div class="card">
 					<div class="card-body">
+						<div class="mb-3">
+							<blockquote class="blockquote font-size-14 mb-0">
+								<p>Data lengkap tabel RFK sesuai dengan jumlah SP2D yang telah terdata.</p>
+								<footer class="blockquote-footer font-size-12 mt-0">
+									Berdasarkan inputan dari konsultan/pengawas
+								</footer>
+							</blockquote>
+						</div>
+						<hr>
 						<div class="table-responsive">
 							<table class="table table-bordered" id="table-rfk">
 								<thead>
@@ -47,8 +56,7 @@
 										<!-- start showing kegiatan -->
 										<?php $keg = 1;
 										foreach ($kegiatan as $k) : ?>
-											<?= $k->program_id ?>
-											<?php if ($k->program_id === $p->id) : ?>
+											<?php if ($k->program_id == $p->id) : ?>
 												<tr>
 													<td class="text-center" style="font-weight: bold;"><?= get_abjad($keg++) ?>.</td>
 													<td colspan="2" style="font-weight: bold;"><?= $k->nama_kegiatan ?></td>
@@ -73,26 +81,32 @@
 												<!-- start showing item -->
 												<?php $no = 1;
 												foreach ($item as $i) : ?>
-													<?php if ($i->subkeg == $sk->id && $i->idk == $k->id && $i->idp == $p->id) : ?>
-														<tr>
-															<td class="text-center"><?= $no++ ?></td>
-															<td><?= $i->uraian_pekerjaan ?></td>
-															<td class="text-center"><?= $i->lokasi ?></td>
-															<td nowrap><?= rupiah($i->pagu) ?></td>
-															<td nowrap><?= rupiah($i->nilai_kontrak) ?></td>
-															<td nowrap><?= rupiah($i->pagu - $i->nilai_kontrak) ?></td>
-															<td class="text-center"><?= round($i->fisik, 2) ?></td>
-															<td>Tes</td>
-															<td>Tes 2</td>
-															<td class="text-center"><?= $i->jangka ?></td>
-															<td class="text-center" nowrap><?= date('d-m-Y', strtotime($i->mulai)) ?></td>
-															<td class="text-center" nowrap><?= date('d-m-Y', strtotime($i->selesai)) ?></td>
-															<td><?= $i->penyedia ?></td>
-															<td><?= $i->no_kontrak ?></td>
-														</tr>
-													<?php endif; ?>
+													<?php foreach ($keuangan as $keu) : ?>
+														<?php if ($i->subkeg == $sk->id && $i->idk == $k->id && $i->idp == $p->id && $keu->id_kontrak == $i->id_kontrak) : ?>
+															<tr>
+																<td class="text-center"><?= $no++ ?></td>
+																<td><?= $i->uraian_pekerjaan ?></td>
+																<td class="text-center"><?= $i->lokasi ?></td>
+																<td nowrap><?= rupiah($i->pagu) ?></td>
+																<td nowrap><?= rupiah($i->nilai_kontrak) ?></td>
+																<td nowrap><?= rupiah($i->pagu - $i->nilai_kontrak) ?></td>
+																<td class="text-center"><?= round($i->fisik, 2) ?></td>
+																<td nowrap>
+																	<?= rupiah($keu->jumlah) ?>
+																</td>
+																<td>
+																	<?= str_replace('.', ',', $keu->persen_kontrak) ?>
+																</td>
+																<td class="text-center"><?= $i->jangka ?></td>
+																<td class="text-center" nowrap><?= date('d-m-Y', strtotime($i->mulai)) ?></td>
+																<td class="text-center" nowrap><?= date('d-m-Y', strtotime($i->selesai)) ?></td>
+																<td><?= $i->penyedia ?></td>
+																<td><?= $i->no_kontrak ?></td>
+															</tr>
+														<?php endif; ?>
+													<?php endforeach; ?>
 												<?php endforeach; ?>
-												<!-- end start -->
+												<!-- end showing item -->
 											<?php endforeach; ?>
 											<!-- end showing subkegiatan -->
 										<?php endforeach; ?>

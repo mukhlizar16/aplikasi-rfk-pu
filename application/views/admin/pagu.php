@@ -10,7 +10,7 @@
 						</div>
 
 						<div class="mt-2 table-responsive">
-							<table class="table table-striped table-bordered" id="tabel-pagu">
+							<table class="table display table-striped table-bordered" id="tabel-pagu">
 								<thead>
 									<tr>
 										<th style="text-align: center; vertical-align: middle" width="5%">No</th>
@@ -23,33 +23,58 @@
 										<th style="text-align: center;vertical-align: middle">Satuan</th>
 										<th style="text-align: center;vertical-align: middle">Pagu</th>
 										<th style="text-align: center;vertical-align: middle">Jenis</th>
+										<th style="text-align: center;vertical-align: middle">Sumber Dana</th>
 										<th style="text-align: center;vertical-align: middle">Aksi</th>
 									</tr>
 								</thead>
 								<tbody>
-									<?php $no = 1;
-									foreach ($pagu as $p) : ?>
+									<!-- start looping program -->
+									<?php $i = 1;
+									foreach ($total as $t) : ?>
 										<tr>
-											<td><?= $no++ ?></td>
-											<td><?= $p['nm_p'] ?></td>
-											<td><?= $p['nm_k'] ?></td>
-											<td><?= $p['nama_sub'] ?></td>
-											<td><?= $p['pekerjaan'] ?></td>
-											<td><?= $p['lokasi'] ?></td>
-											<td style="text-align: center"><?= $p['volume'] ?></td>
-											<td style="text-align: center"><?= $p['satuan'] ?></td>
-											<td nowrap><?= rupiah($p['pagu']) ?></td>
-											<td><?= $p['jenis'] ?></td>
-											<td nowrap>
-												<button class="btn btn-warning btn-sm" id="btn-edit" data-id="<?= $p['id'] ?>">
-													<i class="fa fa-pencil-alt"></i>
-												</button>
-												<button class="btn btn-danger btn-sm" id="btn-hapus" data-id="<?= $p['id'] ?>">
-													<i class="fa fa-trash-alt"></i>
-												</button>
-											</td>
+											<td style="font-weight: bold"><?= get_abjad($i++) ?></td>
+											<td style="font-weight: bold"><?= $t->nm_p ?></td>
+											<td style="font-weight: bold" colspan="10"><?= rupiah($t->sum) ?></td>
+											<td style="display: none"></td>
+											<td style="display: none"></td>
+											<td style="display: none"></td>
+											<td style="display: none"></td>
+											<td style="display: none"></td>
+											<td style="display: none"></td>
+											<td style="display: none"></td>
+											<td style="display: none"></td>
+											<td style="display: none"></td>
 										</tr>
+										<!-- start item -->
+										<?php $no = 1;
+										foreach ($pagu as $p) : ?>
+											<?php if ($p['id_program'] == $t->id_program) : ?>
+												<tr>
+													<td><?= $no++ ?></td>
+													<td><?= $p['nm_p'] ?></td>
+													<td><?= $p['nm_k'] ?></td>
+													<td><?= $p['nama_sub'] ?></td>
+													<td><?= $p['pekerjaan'] ?></td>
+													<td class="text-center"><?= $p['lokasi'] ?></td>
+													<td style="text-align: center"><?= $p['volume'] ?></td>
+													<td style="text-align: center"><?= $p['satuan'] ?></td>
+													<td nowrap><?= rupiah($p['pagu']) ?></td>
+													<td><?= $p['jenis'] ?></td>
+													<td></td>
+													<td nowrap>
+														<button class="btn btn-warning btn-sm" id="btn-edit" data-id="<?= $p['id'] ?>">
+															<i class="fa fa-pencil-alt"></i>
+														</button>
+														<button class="btn btn-danger btn-sm" id="btn-hapus" data-id="<?= $p['id'] ?>">
+															<i class="fa fa-trash-alt"></i>
+														</button>
+													</td>
+												</tr>
+											<?php endif; ?>
+										<?php endforeach; ?>
+										<!-- end item -->
 									<?php endforeach; ?>
+									<!-- end looping program -->
 								</tbody>
 							</table>
 						</div>
@@ -71,7 +96,7 @@
 			<form action="<?= site_url('admin/add_pagu') ?>" method="post" id="form-pagu">
 				<div class="modal-body">
 					<div class="form-group row">
-						<label for="" class="col-form-label col-md-3">Sub Kegiatan</label>
+						<label for="subkegiatan" class="col-form-label col-md-3">Sub Kegiatan</label>
 						<div class="col-md-9">
 							<input type="hidden" class="form-control" name="tipe" id="tipe">
 							<select name="subkegiatan" id="subkegiatan" class="form-control" style="width: 100%">
@@ -84,7 +109,7 @@
 					</div>
 					<br>
 					<div class="form-group row">
-						<label for="" class="col-form-label col-md-3">Program</label>
+						<label for="program" class="col-form-label col-md-3">Program</label>
 						<div class="col-md-9">
 							<input type="hidden" class="form-control" name="id_pagu" id="id-pagu">
 							<input type="text" class="form-control" name="program" id="program">
@@ -92,35 +117,35 @@
 					</div>
 					<br>
 					<div class="form-group row">
-						<label for="" class="col-form-label col-md-3">Kegiatan</label>
+						<label for="kegiatan" class="col-form-label col-md-3">Kegiatan</label>
 						<div class="col-md-9">
 							<input type="text" class="form-control" name="kegiatan" id="kegiatan">
 						</div>
 					</div>
 					<br>
 					<div class="form-group row">
-						<label for="" class="col-form-label col-md-3">Uraian Pekerjaan</label>
+						<label for="pekerjaan" class="col-form-label col-md-3">Uraian Pekerjaan</label>
 						<div class="col-md-9">
 							<input type="text" class="form-control" name="pekerjaan" id="pekerjaan">
 						</div>
 					</div>
 					<br>
 					<div class="form-group row">
-						<label for="" class="col-form-label col-md-3">Lokasi</label>
+						<label for="lokasi" class="col-form-label col-md-3">Lokasi</label>
 						<div class="col-md-9">
 							<input type="text" class="form-control" name="lokasi" id="lokasi">
 						</div>
 					</div>
 					<br>
 					<div class="form-group row">
-						<label for="" class="col-form-label col-md-3">Volume</label>
+						<label for="volume" class="col-form-label col-md-3">Volume</label>
 						<div class="col-md-9">
 							<input type="text" class="form-control" name="volume" id="volume">
 						</div>
 					</div>
 					<br>
 					<div class="form-group row">
-						<label for="" class="col-form-label col-md-3">Satuan</label>
+						<label for="satuan" class="col-form-label col-md-3">Satuan</label>
 						<div class="col-md-9">
 							<select class="form-control" name="satuan" id="satuan">
 								<option value="">--Pilih--</option>
@@ -132,7 +157,7 @@
 					</div>
 					<br>
 					<div class="form-group row">
-						<label for="" class="col-form-label col-md-3">Pagu</label>
+						<label for="pagu" class="col-form-label col-md-3">Pagu</label>
 						<div class="col-md-9">
 							<div class="input-group">
 								<span class="input-group-text" for="">Rp.</span>
@@ -142,12 +167,24 @@
 					</div>
 					<br>
 					<div class="form-group row">
-						<label for="" class="col-form-label col-md-3">Jenis</label>
+						<label for="jenis" class="col-form-label col-md-3">Jenis</label>
 						<div class="col-md-9">
 							<select name="jenis" id="jenis" class="form-control">
 								<option value="">--Pilih--</option>
 								<option value="1">Tender</option>
 								<option value="2">Non Tender</option>
+							</select>
+						</div>
+					</div>
+					<br>
+					<div class="form-group row">
+						<label for="sumber" class="col-form-label col-md-3">Sumber Dana</label>
+						<div class="col-md-9">
+							<select name="sumber" id="sumber" class="form-control">
+								<option value="">--Pilih--</option>
+								<option value="DTU">DTU</option>
+								<option value="DAK">DAK</option>
+								<option value="DOKA">DOKA</option>
 							</select>
 						</div>
 					</div>

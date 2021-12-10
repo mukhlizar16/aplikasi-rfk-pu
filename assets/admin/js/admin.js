@@ -631,6 +631,9 @@ $(document).ready(function () {
 	$('#btn-add-kontrak').click(function () {
 		$('#addKontrakModal').modal('show')
 	});
+	$('#addKontrakModal').on('hidden.bs.modal', function () {
+		$('#form-kontrak')[0].reset();
+	});
 	$('#uraian-kontrak').select2({
 		dropdownParent: $('#addKontrakModal')
 	});
@@ -648,12 +651,10 @@ $(document).ready(function () {
 				$('#program-kontrak').val(data.program);
 				$('#kegiatan-kontrak').val(data.kegiatan);
 				$('#subkegiatan-kontrak').val(data.sub);
-				$('#pagu-kontrak').val(data.pagu).mask('000.000.000.000.000', {
-					reverse: true
-				}).attr('readonly', 'readonly');
+				$('#pagu-kontrak').val(formatRupiah(data.pagu)).attr('readonly', 'readonly');
 				$('#nilai-kontrak').on('change keyup', function () {
 					var n = $('#nilai-kontrak').cleanVal();
-					var p = $('#pagu-kontrak').cleanVal();
+					var p = $('#pagu-kontrak').val().split('.').join("");;
 					var sisa = p - n;
 					$('#sisa-kontrak').val(sisa).trigger('input');
 				});
@@ -700,6 +701,62 @@ $(document).ready(function () {
 			}
 		})
 	});
+	$('#table-kontrak').on('click', '#btn-hapus', function () {
+		var id = $(this).closest('tr').find('#btn-hapus').data('id');
+		$('#hapusKontrakModal').modal('show');
+		$('#id-kontrak').val(id);
+	});
+	$('#table-kontrak').on('click', '#btn-edit', function () {
+		var id = $(this).closest('tr').find('#btn-edit').data('pagu');
+		$('#editKontrakModal').modal('show');
+		// $('#pagu-kontrak option[value="' + id + '"]').attr('selected', 'selected');
+		$('#pilihan-edit-kontrak').val(id).trigger('change');
+	});
+	$('#pilihan-edit-kontrak').change(function (e) {
+		var id = $(this).val()
+		e.preventDefault()
+		$.ajax({
+			url: 'get_pagu_data',
+			type: 'post',
+			data: {
+				id: id
+			},
+			dataType: 'json',
+			success: function (data) {
+				$('#program-edit-kontrak').val(data.program);
+				$('#kegiatan-edit-kontrak').val(data.kegiatan);
+				$('#subkegiatan-edit-kontrak').val(data.sub);
+				$('#pagu-edit-kontrak').val(formatRupiah(data.pagu)).attr('readonly', 'readonly');
+				$('#nilai-edit-kontrak').val(formatRupiah(data.nilai));
+				$('#sisa-edit-kontrak').val($('#pagu-edit-kontrak').val().split('.').join("") - $('#nilai-edit-kontrak').val().split('.').join(""));
+				$('#nilai-edit-kontrak').on('change keyup', function () {
+					var n = $('#nilai-edit-kontrak').val().split('.').join("");
+					var p = $('#pagu-edit-kontrak').val().split('.').join("");
+					var sisa = p - n;
+					$('#sisa-edit-kontrak').val(formatRupiah(sisa.toString())).trigger('input');
+				});
+			}
+		})
+	});
+	$('#form-hapus-kontrak').submit(function (e) {
+		e.preventDefault();
+		$.ajax({
+			url: 'destroy_kontrak',
+			type: 'post',
+			data: $(this).serialize(),
+			dataType: 'json',
+			success: function (res) {
+				if (res.status == 'sukses') {
+					$('#hapusKontrakModal').modal('hide');
+					Swal.fire('Sukses !', res.pesan, 'success').then(() => {
+						location.reload();
+					});
+				} else {
+					Swal.fire('Gagal !', res.pesan, 'error')
+				}
+			}
+		})
+	})
 
 	// realisasi
 	$('#pekerjaan-realisasi, #bulan-realisasi').select2();
@@ -928,6 +985,7 @@ $(document).ready(function () {
 		},
 	});
 	$('#tabel-pagu').DataTable({
+		order: [],
 		language: {
 			sEmptyTable: "Tidak ada data yang tersedia pada tabel ini",
 			sProcessing: "Sedang memproses...",
@@ -947,6 +1005,7 @@ $(document).ready(function () {
 		},
 	});
 	$('#table-kontrak').DataTable({
+		// order: [],
 		language: {
 			sEmptyTable: "Tidak ada data yang tersedia pada tabel ini",
 			sProcessing: "Sedang memproses...",
@@ -1125,4 +1184,19 @@ $(document).ready(function () {
 			}
 		]
 	});
+
+	// Format Rupiah
+	function formatRupiah(angka) {
+		var number_string = angka.replace(/[^,\d]/g, '').toString(),
+			split = number_string.split(','),
+			sisa = split[0].length % 3,
+			rupiah = split[0].substr(0, sisa),
+			ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+		// tambahkan titik jika yang di input sudah menjadi angka ribuan
+		if (ribuan) {
+			separator = sisa ? '.' : '';
+			rupiah += separator + ribuan.join('.');
+		}
+		return rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+	}
 })

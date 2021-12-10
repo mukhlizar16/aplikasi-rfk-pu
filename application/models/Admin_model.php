@@ -126,7 +126,7 @@ class Admin_model extends CI_Model
 
 	public function show_pagu_data()
 	{
-		$this->db->select('g.id as id, p.kode_program as kode_program, p.nama_program as nm_p, k.kode_kegiatan as kode_k, k.nama_kegiatan as nm_k,
+		$this->db->select('g.id as id, p.id as id_program, p.kode_program as kode_program, p.nama_program as nm_p, k.kode_kegiatan as kode_k, k.nama_kegiatan as nm_k,
 							s.kode_subkegiatan as kode_sub, s.nama_subkegiatan as nama_sub, g.uraian_pekerjaan as pekerjaan,
 							g.lokasi as lokasi, g.volume as volume, t.nama_satuan as satuan, g.pagu as pagu, g.tanggal as tanggal, 
 							j.nama_jenis as jenis');
@@ -136,6 +136,23 @@ class Admin_model extends CI_Model
 		$this->db->join('program as p', 'p.id = k.program_id', 'LEFT');
 		$this->db->join('jenis_pengadaan as j', 'j.id = g.jenis_id', 'LEFT');
 		$this->db->join('satuan as t', 't.id = g.satuan_id', 'LEFT');
+		return $this->db->get();
+	}
+
+	public function get_total_pagu()
+	{
+		$this->db->select('g.id as id, p.id as id_program, p.kode_program as kode_program, p.nama_program as nm_p, k.kode_kegiatan as kode_k, k.nama_kegiatan as nm_k,
+							s.kode_subkegiatan as kode_sub, s.nama_subkegiatan as nama_sub, g.uraian_pekerjaan as pekerjaan,
+							g.lokasi as lokasi, g.volume as volume, t.nama_satuan as satuan, g.pagu as pagu, g.tanggal as tanggal, 
+							j.nama_jenis as jenis, SUM(g.pagu) as sum');
+		$this->db->from('pagu as g');
+		$this->db->join('subkegiatan as s', 's.id = g.subkegiatan_id', 'LEFT');
+		$this->db->join('kegiatan as k', 'k.id = s.kegiatan_id', 'LEFT');
+		$this->db->join('program as p', 'p.id = k.program_id', 'LEFT');
+		$this->db->join('jenis_pengadaan as j', 'j.id = g.jenis_id', 'LEFT');
+		$this->db->join('satuan as t', 't.id = g.satuan_id', 'LEFT');
+		$this->db->group_by('p.id');
+		$this->db->order_by('p.nama_program', 'asc');
 		return $this->db->get();
 	}
 
@@ -179,11 +196,12 @@ class Admin_model extends CI_Model
 	public function ambil_data_pagu($id)
 	{
 		$this->db->select('g.id as id, g.uraian_pekerjaan as pekerjaan, p.nama_program as program, k.nama_kegiatan as kegiatan, s.nama_subkegiatan as sub,
-							g.pagu');
+							g.pagu, kk.nilai_kontrak');
 		$this->db->from('pagu as g');
 		$this->db->join('subkegiatan as s', 's.id = g.subkegiatan_id', 'LEFT');
 		$this->db->join('kegiatan as k', 'k.id = s.kegiatan_id', 'LEFT');
 		$this->db->join('program as p', 'p.id = k.program_id', 'LEFT');
+		$this->db->join('kontrak as kk', 'kk.pagu_id = g.id');
 		$this->db->where('g.id', $id);
 		return $this->db->get();
 	}
@@ -195,15 +213,26 @@ class Admin_model extends CI_Model
 
 	public function get_kontrak_data()
 	{
-		$this->db->select('k.id as id, k.nilai_kontrak as nilai, k.no_kontrak as nomor, k.tgl_kontrak as tgl, k.jangka as jangka,
+		$this->db->select('k.id as id, k.pagu_id as id_pagu, k.nilai_kontrak as nilai, k.no_kontrak as nomor, k.tgl_kontrak as tgl, k.jangka as jangka,
 							k.mulai as mulai, k.selesai as selesai, k.penyedia as penyedia, p.uraian_pekerjaan as pekerjaan');
 		$this->db->from('kontrak as k');
 		$this->db->join('pagu as p', 'p.id = k.pagu_id', 'LEFT');
 		$this->db->join('subkegiatan as s', 's.id = p.subkegiatan_id', 'LEFT');
 		$this->db->join('kegiatan as g', 'g.id = s.kegiatan_id', 'LEFT');
 		$this->db->join('program as r', 'r.id = g.program_id', 'LEFT');
-		$this->db->order_by('k.tgl_kontrak', 'desc');
+		$this->db->order_by('k.created_at', 'desc');
 		return $this->db->get();
+	}
+
+	public function delete_kontrak($id)
+	{
+		$this->db->where('id', $id);
+		$del = $this->db->delete('kontrak');
+		if ($del) {
+			return $this->db->query('ALTER TABLE kontrak AUTO_INCREMENT=1');
+		} else {
+			return false;
+		}
 	}
 
 	public function ambil_data_kontrak_pagu($id)
@@ -384,7 +413,7 @@ class Admin_model extends CI_Model
 
 	public function get_data_rfk()
 	{
-		$this->db->select('s.id, k.nilai_kontrak, k.no_kontrak, k.penyedia, p.uraian_pekerjaan, p.pagu, p.lokasi, SUM(pr.bobot_total) as fisik,
+		$this->db->select('s.id, k.nilai_kontrak, k.id as id_kontrak, k.no_kontrak, k.penyedia, p.uraian_pekerjaan, p.pagu, p.lokasi, SUM(pr.bobot_total) as fisik,
 							k.jangka, k.mulai, k.selesai, sk.id as subkeg, kg.id as idk, pg.id as idp');
 		$this->db->from('scope_konsultan as s');
 		$this->db->join('kontrak as k', 'k.id = s.pekerjaan_id');
@@ -421,5 +450,24 @@ class Admin_model extends CI_Model
 		} else {
 			return false;
 		}
+	}
+
+	public function get_keuangan_data()
+	{
+		$this->db->select('kontrak_id as id_kontrak, SUM(jumlah) as jumlah, SUM(persentase_kontrak) as persen_kontrak');
+		$this->db->from('keuangan');
+		$this->db->group_by('kontrak_id');
+		return $this->db->get();
+	}
+
+	public function get_progres_data()
+	{
+		$this->db->select('k.id as id_kontrak, SUM(pr.bobot_total) as persen');
+		$this->db->from('progress_report as pr');
+		$this->db->join('rab as r', 'r.id = pr.rab_id');
+		$this->db->join('scope_konsultan as sk', 'sk.id = r.pekerjaan_id');
+		$this->db->join('kontrak as k', 'k.id = sk.pekerjaan_id');
+		$this->db->group_by('pr.rab_id');
+		return $this->db->get();
 	}
 }

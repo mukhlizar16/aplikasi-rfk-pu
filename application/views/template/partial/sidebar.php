@@ -68,6 +68,7 @@
 								<ul class="sub-menu" aria-expanded="false">
 									<li><a href="<?= site_url('admin/realisasi') ?>">Keuangan</a></li>
 									<li><a href="<?= site_url('admin/fisik') ?>">Fisik</a></li>
+									<li><a href="<?= site_url('admin/validasi') ?>">Validasi Fisik</a></li>
 								</ul>
 							</li>
 						</ul>
