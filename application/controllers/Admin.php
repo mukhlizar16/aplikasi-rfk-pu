@@ -532,12 +532,14 @@ class Admin extends CI_Controller
 		if ($this->input->is_ajax_request()) {
 			$id = $_POST['id'];
 			$cari = $this->Admin_model->ambil_data_pagu($id)->row_array();
+			// var_dump($cari);
+			// die();
 			$data = [
 				'program' => $cari['program'],
 				'kegiatan' => $cari['kegiatan'],
 				'pagu' => $cari['pagu'],
 				'sub' => $cari['sub'],
-				'nilai' => $cari['nilai_kontrak']
+				// 'nilai' => $cari['nilai_kontrak']
 			];
 
 			echo json_encode($data);
@@ -605,25 +607,48 @@ class Admin extends CI_Controller
 
 	public function ambil_kontrak()
 	{
-		$id = $_POST['id'];
-		$cek = $this->Admin_model->ambil_data_kontrak_pagu($id)->row_array();
-		$data = [
-			'kontrak' => $cek['kontrak'],
-			'pagu' => $cek['pagu'],
-		];
-		echo json_encode($data);
+		if ($this->input->is_ajax_request()) {
+			$id = $_POST['id'];
+			$cek = $this->Admin_model->ambil_data_kontrak_pagu($id)->row_array();
+			$data = [
+				'kontrak' => $cek['kontrak'],
+				'pagu' => $cek['pagu'],
+			];
+			echo json_encode($data);
+		} else {
+			echo "No direct script access allowed";
+		}
 	}
 
 	public function realisasi()
 	{
 		$data = [
-			'title' => 'Admin - Realisasi',
+			'title' => 'Realisasi',
 			'breadcrumb' => 'Realisasi',
-			'kontrak' => $this->Admin_model->get_kontrak_data()->result_array()
 		];
-
-		$data['keuangan'] = $this->Admin_model->show_keuangan_data()->result();
+		$data['pekerjaan'] = $this->Admin_model->get_name_pakerjaan()->result();
 		$this->template->load('template/master', 'admin/realisasi', $data, false);
+	}
+
+	public function detil_keuangan()
+	{
+		$data = [
+			'title' => 'Detil Realisasi',
+			'breadcrumb' => 'Detil Realisasi',
+		];
+		if (isset($_POST['bulan']) || isset($_POST['pekerjaan']) || empty($_SESSION['bulan-keuangan']) || empty($_SESSION['pekerjaan-keuangan'])) {
+			$bulan = $_POST['bulan'];
+			$pekerjaan = $_POST['pekerjaan'];
+			$this->session->set_userdata(['bulan-keuangan' => $bulan, 'pekerjaan-keuangan' => $pekerjaan]);
+		} else {
+			$bulan = $_SESSION['bulan-keuangan'];
+			$pekerjaan = $_SESSION['pekerjaan-keuangan'];
+		}
+
+		$data['pekerjaan'] = $this->Admin_model->get_name_pakerjaan()->result();
+		$data['keuangan'] = $this->Admin_model->show_keuangan_data($pekerjaan, $bulan)->result();
+
+		$this->template->load('template/master', 'admin/detil-realisasi', $data, false);
 	}
 
 	public function store_keuangan()
@@ -894,5 +919,16 @@ class Admin extends CI_Controller
 		// print_r($data['program']);
 		// die();
 		$this->template->load('template/master', 'admin/tabel-rfk', $data, false);
+	}
+
+	public function validasi()
+	{
+		$data = [
+			'title' => 'Validasi Data KonWas',
+			'breadcrumb' => 'Validasi Data'
+		];
+
+		$data['konwas'] = $this->Admin_model->get_konwas_data()->result();
+		$this->template->load('template/master', 'admin/validasi', $data, false);
 	}
 }

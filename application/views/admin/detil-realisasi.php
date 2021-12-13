@@ -5,8 +5,7 @@
 				<div class="card">
 					<div class="card-body">
 						<div class="mb-2">
-							<button class="btn btn-primary" id="btn-add-realisasi">Tambah Data
-							</button>
+							<a href="<?= site_url('admin/realisasi') ?>" class="btn btn-primary">Kembali</a>
 						</div>
 						<hr>
 						<div class="mb-3">
@@ -19,7 +18,7 @@
 												<select name="pekerjaan" id="pekerjaan-realisasi" class="form-control select2">
 													<option value="">--Pilih--</option>
 													<?php foreach ($pekerjaan as $p) : ?>
-														<option value="<?= $p->id ?>"><?= $p->uraian_pekerjaan ?></option>
+														<option value="<?= $p->id ?>" <?= @$_SESSION['pekerjaan-keuangan'] == $p->id ? 'selected' : '' ?>><?= $p->uraian_pekerjaan ?></option>
 													<?php endforeach ?>
 												</select>
 											</div>
@@ -30,7 +29,7 @@
 												<select name="bulan" id="bulan-realisasi" class="form-control select2">
 													<option value="">--Pilih--</option>
 													<?php for ($i = 1; $i <= 12; $i++) : ?>
-														<option value="<?= $i ?>"><?= $i ?></option>
+														<option value="<?= $i ?>" <?= @$_SESSION['bulan-keuangan'] == $i ? 'selected' : '' ?>><?= $i ?></option>
 													<?php endfor; ?>
 												</select>
 											</div>
@@ -58,7 +57,28 @@
 										<th class="text-center" width="10%">Aksi</th>
 									</tr>
 								</thead>
-								<tbody></tbody>
+								<tbody>
+									<?php $no = 1;
+									foreach ($keuangan as $k) : ?>
+										<tr>
+											<td class="text-center"><?= $no++ ?></td>
+											<td><?= $k->paket ?></td>
+											<td class="text-center"><?= $k->nomor ?></td>
+											<td nowrap><?= rupiah($k->jumlah) ?></td>
+											<td class="text-center" nowrap><?= date('d-m-Y', strtotime($k->tanggal)) ?></td>
+											<td class="text-center"><?= str_replace('.', ',', $k->persentase_kontrak) ?></td>
+											<td class="text-center"><?= str_replace('.', ',', $k->persentase_pagu) ?></td>
+											<td class="text-center">
+												<a href="<?= base_url() ?>assets/upload/keuangan/<?= $k->dokumen ?>" target="_blank">
+													<img src="<?= base_url() ?>assets/admin/images/pdf.png" alt="pdf" width="40px">
+												</a>
+											</td>
+											<td class="text-center" width="10%">
+												<button class="btn btn-sm btn-danger" id="btn-hapus-realisasi" data-id="<?= $k->id ?>" data-file="<?= $k->dokumen ?>">Hapus</button>
+											</td>
+										</tr>
+									<?php endforeach; ?>
+								</tbody>
 							</table>
 						</div>
 					</div>
@@ -83,8 +103,8 @@
 						<div class="col-md-9">
 							<select name="uraian" id="uraian-realisasi" class="form-control" style="width: 100%">
 								<option value="">--Pilih--</option>
-								<?php foreach ($pekerjaan as $k) : ?>
-									<option value="<?= $k->id ?>"><?= $k->uraian_pekerjaan ?></option>
+								<?php foreach ($kontrak as $k) : ?>
+									<option value="<?= $k['id'] ?>"><?= $k['pekerjaan'] ?></option>
 								<?php endforeach; ?>
 							</select>
 							<input type="hidden" class="form-control" id="nilai-kontrak">

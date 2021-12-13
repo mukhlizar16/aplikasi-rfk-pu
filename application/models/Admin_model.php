@@ -196,12 +196,12 @@ class Admin_model extends CI_Model
 	public function ambil_data_pagu($id)
 	{
 		$this->db->select('g.id as id, g.uraian_pekerjaan as pekerjaan, p.nama_program as program, k.nama_kegiatan as kegiatan, s.nama_subkegiatan as sub,
-							g.pagu, kk.nilai_kontrak');
+							g.pagu');
 		$this->db->from('pagu as g');
-		$this->db->join('subkegiatan as s', 's.id = g.subkegiatan_id', 'LEFT');
-		$this->db->join('kegiatan as k', 'k.id = s.kegiatan_id', 'LEFT');
-		$this->db->join('program as p', 'p.id = k.program_id', 'LEFT');
-		$this->db->join('kontrak as kk', 'kk.pagu_id = g.id');
+		$this->db->join('subkegiatan as s', 's.id = g.subkegiatan_id');
+		$this->db->join('kegiatan as k', 'k.id = s.kegiatan_id');
+		$this->db->join('program as p', 'p.id = k.program_id');
+		// $this->db->join('kontrak as kk', 'kk.pagu_id = g.id');
 		$this->db->where('g.id', $id);
 		return $this->db->get();
 	}
@@ -427,12 +427,22 @@ class Admin_model extends CI_Model
 		return $this->db->get();
 	}
 
-	public function show_keuangan_data()
+	public function get_name_pakerjaan()
+	{
+		$this->db->select('k.*, p.uraian_pekerjaan');
+		$this->db->from('kontrak as k');
+		$this->db->join('pagu as p', 'p.id = k.pagu_id');
+		return $this->db->get();
+	}
+
+	public function show_keuangan_data($pekerjaan, $bulan)
 	{
 		$this->db->select('k.*, p.uraian_pekerjaan as paket');
 		$this->db->from('keuangan as k');
 		$this->db->join('kontrak as r', 'r.id = k.kontrak_id');
 		$this->db->join('pagu as p', 'p.id = r.pagu_id');
+		$this->db->where('k.kontrak_id', $pekerjaan);
+		$this->db->like('k.tanggal', $bulan, 'both');
 		return $this->db->get();
 	}
 
@@ -468,6 +478,16 @@ class Admin_model extends CI_Model
 		$this->db->join('scope_konsultan as sk', 'sk.id = r.pekerjaan_id');
 		$this->db->join('kontrak as k', 'k.id = sk.pekerjaan_id');
 		$this->db->group_by('pr.rab_id');
+		return $this->db->get();
+	}
+
+	public function get_konwas_data()
+	{
+		$this->db->select('u.nama, p.uraian_pekerjaan');
+		$this->db->from('scope_konsultan as s');
+		$this->db->join('user as u', 'u.id = s.user_id');
+		$this->db->join('kontrak as k', 'k.id = s.pekerjaan_id');
+		$this->db->join('pagu as p', 'p.id = k.pagu_id');
 		return $this->db->get();
 	}
 }
