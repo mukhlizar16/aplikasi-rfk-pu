@@ -14,14 +14,7 @@
 								<thead>
 									<tr>
 										<th>No</th>
-										<th>Uraian Pekerjaan</th>
-										<th>Nilai Kontrak</th>
-										<th>Nomor Kontrak</th>
-										<th>Tanggal Kontrak</th>
-										<th>Jangka Waktu</th>
-										<th>Tanggal Mulai</th>
-										<th>Tanggal Selesai</th>
-										<th>Penyedia</th>
+										<th>Paket Pekerjaan</th>
 										<th>% Fisik</th>
 									</tr>
 								</thead>

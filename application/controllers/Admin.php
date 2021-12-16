@@ -930,7 +930,6 @@ class Admin extends CI_Controller
 			'title' => 'Validasi Data KonWas',
 			'breadcrumb' => 'Validasi Data'
 		];
-
 		$data['konwas'] = $this->Admin_model->get_konwas_data()->result();
 		$this->template->load('template/master', 'admin/validasi', $data, false);
 	}
@@ -941,9 +940,9 @@ class Admin extends CI_Controller
 			'title' => 'Detil Progress',
 			'breadcrumb' => 'Detil Progress',
 		];
-		$idp = $this->encryption->decrypt(urldecode($id));
+		$idp = base64_decode($id);
 		$data['progres'] = $this->Admin_model->get_progres_data_byID($idp)->result();
-		// print_r($id);
+		// print_r($idp);
 		// die();
 
 		$this->template->load('template/master', 'admin/detil-validasi', $data, false);

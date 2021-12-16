@@ -32,7 +32,7 @@
                                             <td><?= $item->nama ?></td>
                                             <td><?= $item->uraian_pekerjaan ?></td>
                                             <td class="text-center">
-                                                <a href="<?= site_url('admin/detil_validasi/') . urlencode($this->encryption->encrypt($item->id)) ?>" class="btn btn-primary btn-sm">Lihat</a>
+                                                <a href="<?= site_url('admin/detil_validasi/') . md5($item->id) ?>" class="btn btn-primary btn-sm">Lihat</a>
                                             </td>
                                         </tr>
                                     <?php endforeach ?>

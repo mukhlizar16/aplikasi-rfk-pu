@@ -446,12 +446,22 @@ class Admin_model extends CI_Model
 
 	public function show_keuangan_data($pekerjaan, $bulan)
 	{
+		// CARA 1
+		/* return $this->db->query('
+		SELECT k.*, p.uraian_pekerjaan as paket
+		FROM keuangan as k
+		JOIN kontrak as r ON r.id = k.kontrak_id
+		JOIN pagu as p ON p.id = r.pagu_id
+		WHERE k.kontrak_id = ' . $pekerjaan . ' AND MONTH(k.tanggal) = ' . $bulan . '
+		'); */
+
+		// CARA 2
 		$this->db->select('k.*, p.uraian_pekerjaan as paket');
 		$this->db->from('keuangan as k');
 		$this->db->join('kontrak as r', 'r.id = k.kontrak_id');
 		$this->db->join('pagu as p', 'p.id = r.pagu_id');
 		$this->db->where('k.kontrak_id', $pekerjaan);
-		$this->db->like('k.tanggal', $bulan, 'both');
+		$this->db->where('MONTH(k.tanggal)', $bulan);
 		return $this->db->get();
 	}
 
