@@ -1,3 +1,4 @@
+<?php $uri2 = $this->uri->segment(2); ?>
 <div class="vertical-menu">
 	<div data-simplebar class="h-100">
 		<div class="user-sidebar text-center">
@@ -54,21 +55,23 @@
 							<li><a href="<?= site_url('admin/pagu') ?>">Pagu</a></li>
 						</ul>
 					</li>
-					<li>
+					<li class="<?= in_array($uri2, ['detil_validasi']) ? 'mm-active' : '' ?>">
 						<a href="javascript: void(0);" class="has-arrow waves-effect">
 							<i class="dripicons-suitcase"></i>
 							<span>Data Realisasi</span>
 						</a>
-						<ul class="sub-menu" aria-expanded="false">
+						<ul class="sub-menu <?= in_array($uri2, ['detil_validasi']) ? 'mm-show' : '' ?>" aria-expanded="false">
 							<li><a href="<?= site_url('admin/kontrak') ?>">Data Kontrak</a></li>
-							<li>
-								<a href="javascrip:void" class="has-arrow waves-effect">
+							<li class="<?= in_array($uri2, ['detil_validasi']) ? 'mm-active' : '' ?>">
+								<a href="javascrip:void" class="has-arrow waves-effect <?= in_array($uri2, ['detil_validasi']) ? 'mm-active' : '' ?>">
 									Realisasi Kontrak
 								</a>
-								<ul class="sub-menu" aria-expanded="false">
+								<ul class="sub-menu <?= in_array($uri2, ['detil_validasi']) ? 'mm-show' : '' ?>" aria-expanded="false">
 									<li><a href="<?= site_url('admin/realisasi') ?>">Keuangan</a></li>
 									<li><a href="<?= site_url('admin/fisik') ?>">Fisik</a></li>
-									<li><a href="<?= site_url('admin/validasi') ?>">Validasi Fisik</a></li>
+									<li class="<?= in_array($uri2, ['detil_validasi']) ? 'mm-active' : '' ?>">
+										<a href="<?= site_url('admin/validasi') ?>" class="<?= in_array($uri2, ['detil_validasi']) ? 'active' : '' ?>">Validasi Fisik</a>
+									</li>
 								</ul>
 							</li>
 						</ul>

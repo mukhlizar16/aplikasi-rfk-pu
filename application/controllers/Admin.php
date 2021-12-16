@@ -627,6 +627,9 @@ class Admin extends CI_Controller
 			'breadcrumb' => 'Realisasi',
 		];
 		$data['pekerjaan'] = $this->Admin_model->get_name_pakerjaan()->result();
+		$data['keuangan'] = $this->Admin_model->show_all_keuangan_data()->result();
+		// print_r($data['keuangan']);
+		// die();
 		$this->template->load('template/master', 'admin/realisasi', $data, false);
 	}
 
@@ -930,5 +933,19 @@ class Admin extends CI_Controller
 
 		$data['konwas'] = $this->Admin_model->get_konwas_data()->result();
 		$this->template->load('template/master', 'admin/validasi', $data, false);
+	}
+
+	public function detil_validasi($id)
+	{
+		$data = [
+			'title' => 'Detil Progress',
+			'breadcrumb' => 'Detil Progress',
+		];
+		$idp = $this->encryption->decrypt(urldecode($id));
+		$data['progres'] = $this->Admin_model->get_progres_data_byID($idp)->result();
+		// print_r($id);
+		// die();
+
+		$this->template->load('template/master', 'admin/detil-validasi', $data, false);
 	}
 }

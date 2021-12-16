@@ -201,7 +201,6 @@ class Admin_model extends CI_Model
 		$this->db->join('subkegiatan as s', 's.id = g.subkegiatan_id');
 		$this->db->join('kegiatan as k', 'k.id = s.kegiatan_id');
 		$this->db->join('program as p', 'p.id = k.program_id');
-		// $this->db->join('kontrak as kk', 'kk.pagu_id = g.id');
 		$this->db->where('g.id', $id);
 		return $this->db->get();
 	}
@@ -435,6 +434,16 @@ class Admin_model extends CI_Model
 		return $this->db->get();
 	}
 
+	public function show_all_keuangan_data()
+	{
+		$this->db->select('k.*, DATE_FORMAT(k.tanggal, "%d-%m-%Y") as tgl, p.uraian_pekerjaan as paket');
+		$this->db->from('keuangan as k');
+		$this->db->join('kontrak as r', 'r.id = k.kontrak_id', 'left');
+		$this->db->join('pagu as p', 'p.id = r.pagu_id', 'left');
+		$this->db->order_by('k.created_at', 'desc');
+		return $this->db->get();
+	}
+
 	public function show_keuangan_data($pekerjaan, $bulan)
 	{
 		$this->db->select('k.*, p.uraian_pekerjaan as paket');
@@ -483,11 +492,23 @@ class Admin_model extends CI_Model
 
 	public function get_konwas_data()
 	{
-		$this->db->select('u.nama, p.uraian_pekerjaan');
+		$this->db->select('u.id, u.nama, p.uraian_pekerjaan');
 		$this->db->from('scope_konsultan as s');
 		$this->db->join('user as u', 'u.id = s.user_id');
 		$this->db->join('kontrak as k', 'k.id = s.pekerjaan_id');
 		$this->db->join('pagu as p', 'p.id = k.pagu_id');
+		return $this->db->get();
+	}
+
+	public function get_progres_data_byID($id)
+	{
+		$this->db->select('pr.id, pr.bulan, d.nama_divisi as divisi, s.nama_seksi as seksi, r.seksi_lain, r.cabang_seksi_lain, pr.bulan, pr.vol_sebelum, pr.jlh_harga_sebelum, pr.bobot_sebelum,
+							pr.vol_sekarang, pr.jlh_harga_sekarang, pr.bobot_sekarang, pr.vol_total, pr.harga_total, pr.bobot_total');
+		$this->db->from('progress_report as pr');
+		$this->db->join('rab as r', 'r.id = pr.rab_id');
+		$this->db->join('divisi as d', 'd.id = r.divisi_id');
+		$this->db->join('seksi as s', 's.id = r.seksi_id');
+		$this->db->where('pr.konsultan_id', $id);
 		return $this->db->get();
 	}
 }

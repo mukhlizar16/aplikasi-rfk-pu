@@ -647,6 +647,17 @@ $(document).ready(function () {
 				id: id
 			},
 			dataType: 'json',
+			beforeSend: function () {
+				Swal.fire({
+					title: 'Mohon Menunggu!',
+					html: 'Sedang memuat data...',
+					timer: 2000,
+					timerProgressBar: true,
+					didOpen: function () {
+						Swal.showLoading()
+					}
+				})
+			},
 			success: function (data) {
 				$('#program-kontrak').val(data.program);
 				$('#kegiatan-kontrak').val(data.kegiatan);
@@ -1120,6 +1131,9 @@ $(document).ready(function () {
 		},
 	});
 	$('#table-realisasi').DataTable({
+		// order: [
+		// 	[4, "desc"]
+		// ],
 		language: {
 			sEmptyTable: "Tidak ada data yang tersedia pada tabel ini",
 			sProcessing: "Sedang memproses...",
