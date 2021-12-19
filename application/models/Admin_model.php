@@ -513,12 +513,18 @@ class Admin_model extends CI_Model
 	public function get_progres_data_byID($id)
 	{
 		$this->db->select('pr.id, pr.bulan, d.nama_divisi as divisi, s.nama_seksi as seksi, r.seksi_lain, r.cabang_seksi_lain, pr.bulan, pr.vol_sebelum, pr.jlh_harga_sebelum, pr.bobot_sebelum,
-							pr.vol_sekarang, pr.jlh_harga_sekarang, pr.bobot_sekarang, pr.vol_total, pr.harga_total, pr.bobot_total');
+							pr.vol_sekarang, pr.jlh_harga_sekarang, pr.bobot_sekarang, pr.vol_total, pr.harga_total, pr.bobot_total, pr.is_validate');
 		$this->db->from('progress_report as pr');
 		$this->db->join('rab as r', 'r.id = pr.rab_id');
 		$this->db->join('divisi as d', 'd.id = r.divisi_id');
 		$this->db->join('seksi as s', 's.id = r.seksi_id');
 		$this->db->where('pr.konsultan_id', $id);
 		return $this->db->get();
+	}
+
+	public function validate_progress($id, $data)
+	{
+		$this->db->where('id', $id);
+		return $this->db->update('progress_report', $data);
 	}
 }

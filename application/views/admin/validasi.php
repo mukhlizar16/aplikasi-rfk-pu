@@ -15,7 +15,7 @@
                         <hr>
 
                         <div class="table-responsive">
-                            <table class="table table-hover table-bordered">
+                            <table class="table table-hover table-bordered" id="table-konwas">
                                 <thead>
                                     <tr>
                                         <th class="text-center" width="5%">No</th>
@@ -32,7 +32,7 @@
                                             <td><?= $item->nama ?></td>
                                             <td><?= $item->uraian_pekerjaan ?></td>
                                             <td class="text-center">
-                                                <a href="<?= site_url('admin/detil_validasi/') . md5($item->id) ?>" class="btn btn-primary btn-sm">Lihat</a>
+                                                <a href="<?= site_url('admin/detil_validasi/') . base64_encode($item->id) ?>" class="btn btn-primary btn-sm">Lihat</a>
                                             </td>
                                         </tr>
                                     <?php endforeach ?>

@@ -16,7 +16,7 @@
                         <hr>
 
                         <div class="table-responsive">
-                            <table class="table table-hover table-bordered">
+                            <table class="table table-hover table-bordered" id="table-validate">
                                 <thead>
                                     <tr>
                                         <th style="vertical-align: middle;" class="text-center" rowspan="2">No</th>
@@ -58,8 +58,12 @@
                                             <td class="text-center" nowrap><?= rupiah($p->harga_total) ?></td>
                                             <td class="text-center"><?= str_replace('.', ',', round($p->bobot_total, 2)) ?></td>
                                             <td class="text-center" nowrap>
-                                                <button class="btn btn-sm btn-warning">Edit</button>
-                                                <button class="btn btn-sm btn-success">Validasi</button>
+                                                <?php if ($p->is_validate == 0) : ?>
+                                                    <button class="btn btn-sm btn-warning">Edit</button>
+                                                    <button class="btn btn-sm btn-primary" data-id="<?= $p->id ?>" id="btn-validate">Validasi</button>
+                                                <?php else : ?>
+                                                    <button class="btn btn-sm btn-success waves-effect waves-light">VALID</button>
+                                                <?php endif ?>
                                             </td>
                                         </tr>
                                     <?php endforeach ?>
@@ -69,6 +73,34 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal validasi -->
+<div class="modal fades" id="validateModal" tabindex="-1" role="dialog" aria-labelledby="validateModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="validateModalLabel">Anda akan memvalidasi ?</h5>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <form action="<?= site_url('admin/store_validate') ?>" id="form-validate" method="post">
+                <div class="modal-body">
+                    <p>Jika data sudah benar, silahkan pilih valid pada pilihan dibawah.</p>
+                    <input type="hidden" name="id" id="id-progres" class="form-control">
+                    <select name="valid" id="valid" class="form-control">
+                        <option value="">--Pilih--</option>
+                        <option value="1">Valid</option>
+                        <option value="0">Tidak Valid</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary waves-effect waves-light" type="button" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary waves-effect waves-light">Simpan</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

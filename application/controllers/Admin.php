@@ -947,4 +947,23 @@ class Admin extends CI_Controller
 
 		$this->template->load('template/master', 'admin/detil-validasi', $data, false);
 	}
+
+	public function store_validate()
+	{
+		if ($this->input->is_ajax_request()) {
+			$id = $_POST['id'];
+			$data = [
+				'is_validate' => $_POST['valid']
+			];
+			$change = $this->Admin_model->validate_progress($id, $data);
+			if ($change) {
+				$ajax = ['status' => 'sukses', 'pesan' => 'Berhasil divalidasi'];
+			} else {
+				$ajax = ['status' => 'gagal', 'pesan' => 'Gagal divalidasi'];
+			}
+			echo json_encode($ajax);
+		} else {
+			echo "No direct script access allowed";
+		}
+	}
 }

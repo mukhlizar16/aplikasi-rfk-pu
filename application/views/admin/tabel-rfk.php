@@ -13,6 +13,29 @@
 							</blockquote>
 						</div>
 						<hr>
+						<div class="mb-5">
+							<form action="" method="post">
+								<div class="form-group row mb-2">
+									<label for="pekerjaan-rfk" class="col-form-label col-md-2">Pekerjaan</label>
+									<div class="col-md-4">
+										<select name="pekerjaan" id="pekerjaan-rfk" class="form-control">
+											<option value="">--Pilih--</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="bulan-rfk" class="col-form-label col-md-2">Bulan</label>
+									<div class="col-md-4">
+										<select name="bulan" id="bulan-rfk" class="form-control">
+											<option value="">--Pilih--</option>
+											<?php for ($i = 1; $i <= 12; $i++) : ?>
+												<option value="<?= $i ?>"><?= $i ?></option>
+											<?php endfor ?>
+										</select>
+									</div>
+								</div>
+							</form>
+						</div>
 						<div class="table-responsive">
 							<table class="table table-bordered" id="table-rfk">
 								<thead>
