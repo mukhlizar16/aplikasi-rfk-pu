@@ -84,7 +84,7 @@ function sektor()
 
 /**
  * 
- * $param
+ * param
  * create abjad list
  */
 function get_abjad_kecil($index)

@@ -14,16 +14,19 @@
 						</div>
 						<hr>
 						<div class="mb-5">
-							<form action="" method="post">
+							<form action="<?= site_url('admin/detil_rfk') ?>" method="post">
 								<div class="form-group row mb-2">
 									<label for="pekerjaan-rfk" class="col-form-label col-md-2">Pekerjaan</label>
 									<div class="col-md-4">
 										<select name="pekerjaan" id="pekerjaan-rfk" class="form-control">
 											<option value="">--Pilih--</option>
+											<?php foreach ($item as $i) : ?>
+												<option value="<?= $i->id ?>"><?= $i->uraian_pekerjaan ?></option>
+											<?php endforeach ?>
 										</select>
 									</div>
 								</div>
-								<div class="form-group row">
+								<div class="form-group row mb-2">
 									<label for="bulan-rfk" class="col-form-label col-md-2">Bulan</label>
 									<div class="col-md-4">
 										<select name="bulan" id="bulan-rfk" class="form-control">
@@ -32,6 +35,12 @@
 												<option value="<?= $i ?>"><?= $i ?></option>
 											<?php endfor ?>
 										</select>
+									</div>
+								</div>
+								<div class="form-group row">
+									<div class="col-md-2"></div>
+									<div class="col-md-4">
+										<button class="btn btn-sm btn-primary waves-effect waves-light" type="submit">Tampilkan</button>
 									</div>
 								</div>
 							</form>

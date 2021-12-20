@@ -915,6 +915,14 @@ $(document).ready(function () {
 		});
 	});
 
+	/**
+	 * @param
+	 * TODO: Tabel RFK
+	 */
+	$("#pekerjaan-rfk, #bulan-rfk").select2({
+		placeholder: "Pilih...",
+	});
+
 	// datatables
 	$("#tabel-program").DataTable({
 		language: {

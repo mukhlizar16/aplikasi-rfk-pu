@@ -527,4 +527,33 @@ class Admin_model extends CI_Model
 		$this->db->where('id', $id);
 		return $this->db->update('progress_report', $data);
 	}
+
+	public function retrieve_pekerjaan()
+	{
+		$this->db->where('parent_id', null);
+
+		return $this->db->get('pekerjaan');
+	}
+
+	public function retrieve_kegiatan($id)
+	{
+		$this->db->where('parent_id', $id);
+		return $this->db->get('pekerjaan');
+	}
+
+	public function retrieve_subkegiatan($id)
+	{
+		$this->db->where('parent_id', $id);
+		$kegiatan = $this->db->get('pekerjaan');
+		$keg = $kegiatan->result();
+		foreach ($keg as $k) {
+			$data[] = [
+				'id' => $k->id,
+				'kode' => $k->kode,
+				'nama' => $k->nama,
+				'sub' => $this->retrieve_kegiatan($k->id)->result()
+			];
+		}
+		return $data;
+	}
 }

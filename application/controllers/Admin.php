@@ -25,6 +25,17 @@ class Admin extends CI_Controller
 			'breadcrumb' => 'Program'
 		];
 
+		$parent = $this->Admin_model->retrieve_pekerjaan()->result();
+		foreach ($parent as $p) {
+			$list[] = [
+				'id' => $p->id,
+				'kode' => $p->kode,
+				'nama' => $p->nama,
+				'kegiatan' => $this->Admin_model->retrieve_subkegiatan($p->id)
+			];
+		}
+		$data['pekerjaan'] = $list;
+
 		$data['program'] = $this->Admin_model->show_dataProgram()->result_array();
 		$this->template->load('template/master', 'admin/program', $data, false);
 	}
@@ -922,6 +933,27 @@ class Admin extends CI_Controller
 		// print_r($data['program']);
 		// die();
 		$this->template->load('template/master', 'admin/tabel-rfk', $data, false);
+	}
+
+	public function detil_rfk()
+	{
+		$data = [
+			'title' => 'Detil RFK',
+			'breadcrumb' => 'Detil RFK'
+		];
+		$post = $this->input->post();
+		// print_r($post);
+		// die();
+		if (isset($post) || empty($_SESSION['pekerjaan-rfk']) || empty($_SESSION['bulan-rfk'])) {
+			$pekerjaan = $_POST['pekerjaan'];
+			$bulan = $_POST['bulan'];
+			$this->session->set_userdata(['pekerjaan-rfk' => $pekerjaan, 'bulan-rfk' => $bulan]);
+		} else {
+			$pekerjaan = $_SESSION['pekerjaan-rfk'];
+			$bulan = $_SESSION['bulan-rfk'];
+		}
+
+		$this->template->load('template/master', 'admin/detil-rfk', $data, false);
 	}
 
 	public function validasi()
