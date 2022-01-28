@@ -48,7 +48,6 @@ class Admin_model extends CI_Model
                 WHERE YEAR(tanggal) = 2021
                 GROUP BY YEAR(tanggal)
         ');
-
 	}
 
 	public function all_sumber_dana()
@@ -904,6 +903,17 @@ class Admin_model extends CI_Model
 									ON c.parent_id = p.id
 								WHERE
 									p.parent_id IS NULL
+		');
+	}
+
+	public function get_data_cek_pagu($subkegiatan)
+	{
+		return $this->db->query('
+			SELECT SUM(pagu) as pagu, sk.nama_subkegiatan
+			FROM pagu as p
+			JOIN subkegiatan AS sk ON sk.id = p.subkegiatan_id
+			WHERE subkegiatan_id = ' . $subkegiatan . '
+			GROUP BY subkegiatan_id
 		');
 	}
 }

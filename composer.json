@@ -12,15 +12,15 @@
 	},
 	"require": {
 		"php": ">=7.2",
-		"igorescobar/jquery-mask-plugin": "^1.14"
+		"igorescobar/jquery-mask-plugin": "^1.14",
+		"phpoffice/phpspreadsheet": "^1.21"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"
 	},
 	"require-dev": {
-	  "roave/security-advisories": "dev-latest"
-	  ,
-	  "mikey179/vfsstream": "1.1.*",
+		"roave/security-advisories": "dev-latest",
+		"mikey179/vfsstream": "1.1.*",
 		"phpunit/phpunit": "4.* || 5.*"
 	}
 }

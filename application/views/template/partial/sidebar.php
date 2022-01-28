@@ -53,6 +53,7 @@
 						</a>
 						<ul class="sub-menu" aria-expanded="false">
 							<li><a href="<?= site_url('admin/pagu') ?>">Pagu</a></li>
+							<li><a href="<?= site_url('admin/cek_pagu') ?>">Cek Pagu</a></li>
 						</ul>
 					</li>
 					<li class="<?= in_array($uri2, ['detil_validasi']) ? 'mm-active' : '' ?>">

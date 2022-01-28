@@ -602,6 +602,64 @@ $(document).ready(function () {
 		});
 	});
 
+	// TODO: cek pagu
+	$("#program-cek-pagu").change(function () {
+		var id = $(this).val();
+		$.ajax({
+			url: 'get_kegiatan',
+			type: 'POST',
+			data: {
+				id: id
+			},
+			dataType: 'json',
+			success: function (data) {
+				var opt = '<option value="">Pilih Kegiatan</option>';
+				for (let i = 0; i < data.length; i++) {
+					opt += '<option value="' + data[i].id + '">' + data[i].nama_kegiatan + '</option>';
+				}
+				$("#kegiatan-cek-pagu").html(opt);
+			}
+		})
+	});
+	$("#kegiatan-cek-pagu").change(function () {
+		var id = $(this).val();
+		$.ajax({
+			url: 'get_subkegiatan',
+			type: 'POST',
+			data: {
+				id: id
+			},
+			dataType: 'json',
+			success: function (data) {
+				var opt = '<option value="">Pilih Sub Kegiatan</option>';
+				for (let i = 0; i < data.length; i++) {
+					opt += '<option value="' + data[i].id + '">' + data[i].subkegiatan + '</option>';
+				}
+				$("#sub-kegiatan-cek-pagu").html(opt);
+			}
+		})
+	});
+	$("#form-cek-pagu").submit(function (e) {
+		e.preventDefault();
+		$.ajax({
+			url: 'get_data_cek_pagu',
+			type: 'POST',
+			data: $(this).serialize(),
+			dataType: 'json',
+			beforeSend: function () {
+				$("#table-cek-pagu tbody").empty();
+			},
+			success: function (data) {
+				if (data) {
+					var tr = '<tr><td>' + data.nama_subkegiatan + '</td><td><b>Rp. ' + formatRupiah(data.pagu) + '</b></td></tr>';
+				} else {
+					var tr = '<tr><td class="text-center" colspan="2">Tidak ditemukan data</td></tr>';
+				}
+				$("#table-cek-pagu").append(tr);
+			}
+		});
+	});
+
 	// kontrak
 	$("#btn-add-kontrak").click(function () {
 		$("#addKontrakModal").modal("show");

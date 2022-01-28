@@ -1,5 +1,10 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
+require 'vendor/autoload.php';
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 class Admin extends CI_Controller
 {
 
@@ -18,7 +23,7 @@ class Admin extends CI_Controller
 		$data['grafik'] = $this->Admin_model->all_sumber_dana()->result_array();
 		$data['pie'] = $this->Admin_model->pie()->row_array();
 
-//		print_r($data['grafik']);die();
+		//		print_r($data['grafik']);die();
 		$this->template->load('template/master', 'admin/home', $data, false);
 	}
 
@@ -433,8 +438,6 @@ class Admin extends CI_Controller
 		$data['optlabel'] = $this->Admin_model->show_jenis_belanja_parent()->result();
 		$data['options'] = $this->Admin_model->show_jenis_belanja_child()->result();
 
-//		 print_r($data['tes']);
-//		 die();
 		$this->template->load('template/master', 'admin/pagu', $data, false);
 	}
 
@@ -455,7 +458,7 @@ class Admin extends CI_Controller
 				'belanja_id' 		=> $_POST['belanja'],
 				'tanggal' 			=> date('Y-m-d H:i:s')
 			];
-//			var_dump($data);die();
+			//			var_dump($data);die();
 			$simpan = $this->Admin_model->store_pagu($data);
 			if ($simpan) {
 				$ajax = [
@@ -479,18 +482,7 @@ class Admin extends CI_Controller
 		if ($this->input->is_ajax_request()) {
 			$id = $_POST['id'];
 			$cari = $this->Admin_model->get_pagu_data($id)->row_array();
-//			var_dump($cari);die();
-//			$data = [
-//				'id' => $id,
-//				'sub_keg' => $cari['subkegiatan_id'],
-//				'uraian' => $cari['uraian_pekerjaan'],
-//				'lokasi' => $cari['lokasi'],
-//				'volume' => $cari['volume'],
-//				'satuan' => $cari['satuan_id'],
-//				'pagu' => $cari['pagu'],
-//				'jenis' => $cari['jenis_id'],
-//			];
-			/*var_dump($data);die();*/
+
 			echo json_encode($cari);
 		} else {
 			echo 'No direct script access allowed';
@@ -513,7 +505,7 @@ class Admin extends CI_Controller
 				'belanja_id' => $_POST['belanja'],
 				'updated_at' => date('Y-m-d H:i:s')
 			];
-//			var_dump([$id, $data]);die();
+			//			var_dump([$id, $data]);die();
 			$update = $this->Admin_model->update_pagu($id, $data);
 			if ($update) {
 				$ajax = [
@@ -545,6 +537,24 @@ class Admin extends CI_Controller
 			echo json_encode($ajax);
 		} else {
 			echo "No direct script access allowed";
+		}
+	}
+
+	public function cek_pagu()
+	{
+		$data = ['title' => 'Cek Pagu', 'breadcrumb' => 'Cek Pagu'];
+		$data['program'] = $this->Admin_model->show_dataProgram()->result();
+		$this->template->load('template/master', 'admin/cek-pagu', $data, false);
+	}
+
+	public function get_data_cek_pagu()
+	{
+		if ($this->input->is_ajax_request()) {
+			$subkegiatan = $_POST['subkegiatan'];
+			$data = $this->Admin_model->get_data_cek_pagu($subkegiatan)->row();
+			echo json_encode($data);
+		} else {
+			echo "No direct	script access allowed";
 		}
 	}
 
@@ -586,7 +596,7 @@ class Admin extends CI_Controller
 				'tgl_selesai' 	=> date('Y-m-d', strtotime($cari['selesai'])),
 				'penyedia' 		=> $cari['penyedia']
 			];
-//			var_dump($data);die();
+			//			var_dump($data);die();
 
 			echo json_encode($data);
 		} else {
@@ -609,7 +619,7 @@ class Admin extends CI_Controller
 
 	public function update_kontrak()
 	{
-		if($this->input->is_ajax_request()){
+		if ($this->input->is_ajax_request()) {
 			$post = $this->input->post();
 			$kontrak_id = $_POST['uraian'];
 			$data = [
@@ -623,15 +633,15 @@ class Admin extends CI_Controller
 				'penyedia' => $_POST['penyedia'],
 				'update_at' => date('Y-m-d H:i:s')
 			];
-//			var_dump([$kontrak_id, $data]);die();
+			//			var_dump([$kontrak_id, $data]);die();
 			$update = $this->Admin_model->update_kontrak_data($kontrak_id, $data);
-			if($update){
+			if ($update) {
 				$ajax = ['status' => 'sukses', 'message' => 'Data kontrak berhasil diperbaharui'];
-			}else{
+			} else {
 				$ajax = ['status' => 'gagal', 'message' => 'Data kontrak gagal diperbaharui'];
 			}
 			echo json_encode($ajax);
-		}else{
+		} else {
 			echo "No direct script access allowed";
 		}
 	}
@@ -653,7 +663,7 @@ class Admin extends CI_Controller
 				'created_at' => date('Y-m-d H:i:s')
 			];
 
-//			var_dump($data);die();
+			//			var_dump($data);die();
 
 			$simpan = $this->Admin_model->store_data_kontrak($data);
 			if ($simpan) {
@@ -852,21 +862,22 @@ class Admin extends CI_Controller
 		$this->template->load('template/master', 'admin/detil-fisik', $data, false);
 	}
 
-	public function update_detil_fisik(){
-		if($this->input->is_ajax_request()){
+	public function update_detil_fisik()
+	{
+		if ($this->input->is_ajax_request()) {
 			$id = $_POST['id'];
 			$data = [
 				'bulan' => $_POST['bulan'],
 				'persen' => $_POST['persen']
 			];
 			$update = $this->Admin_model->update_detil_fisik($id, $data);
-			if($update){
+			if ($update) {
 				$ajax = ['status' => 'sukses', 'pesan' => 'Data berhasil diperbaharui'];
-			}else{
-				$ajax = ['status' =>'gagal', 'pesan' => 'Data gagal diperbaharui'];
+			} else {
+				$ajax = ['status' => 'gagal', 'pesan' => 'Data gagal diperbaharui'];
 			}
 			echo json_encode($ajax);
-		}else{
+		} else {
 			echo "No direct script access allowed";
 		}
 	}
@@ -1066,9 +1077,9 @@ class Admin extends CI_Controller
 		$data['subkegiatan'] = $this->Admin_model->get_subkegiatan_id()->result();	// subkegiatan
 		$data['item'] = $this->Admin_model->get_data_rfk()->result();
 		$data['keuangan'] = $this->Admin_model->get_keuangan_data()->result();
-//		$data['fisik'] = $this->Admin_model->get_progres_data()->result();
-//		 print_r($data['kegiatan']);
-//		 die();
+		//		$data['fisik'] = $this->Admin_model->get_progres_data()->result();
+		//		 print_r($data['kegiatan']);
+		//		 die();
 		$this->template->load('template/master', 'admin/tabel-rfk', $data, false);
 	}
 
@@ -1089,14 +1100,14 @@ class Admin extends CI_Controller
 		}
 
 
-//		var_dump([$pekerjaan, $bulan, $sumber]);die();
-//		$data['result'] = $this->Admin_model->show_parent($pekerjaan, $bulan, $sumber)->result();
+		//		var_dump([$pekerjaan, $bulan, $sumber]);die();
+		//		$data['result'] = $this->Admin_model->show_parent($pekerjaan, $bulan, $sumber)->result();
 		$data['dinas'] = $this->Admin_model->total_dinas_by_month($bulan)->row();
 		$data['program'] = $this->Admin_model->total_program_by_month($bulan)->result();
 		$data['kegiatan'] = $this->Admin_model->total_kegiatan_by_month($bulan)->result();
 		$data['subkeg'] = $this->Admin_model->total_subkeg_by_month($bulan)->result();
 		$data['result2'] = $this->Admin_model->show_parent2($bulan)->result();
-//
+		//
 		$this->template->load('template/master', 'admin/detil-rfk2', $data, false);
 	}
 
