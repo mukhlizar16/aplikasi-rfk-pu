@@ -10,18 +10,18 @@
 						</div>
 
 						<div class="mt-2 table-responsive">
-							<table class="table table-striped table-hover" id="table-kontrak">
+							<table class="table table-bordered table-hover" id="table-kontrak">
 								<thead>
 									<tr>
 										<th>No</th>
-										<th>Uraian Pekerjaan</th>
-										<th>Nilai Kontrak</th>
-										<th>Nomor Kontrak</th>
-										<th>Tanggal Kontrak</th>
-										<th>Jangka Waktu</th>
-										<th>Tanggal Mulai</th>
-										<th>Tanggal Selesai</th>
-										<th>Penyedia</th>
+										<th class="text-center">Uraian Pekerjaan</th>
+										<th class="text-center">Nilai Kontrak</th>
+										<th class="text-center">Nomor Kontrak</th>
+										<th class="text-center">Tanggal Kontrak</th>
+										<th class="text-center">Jangka Waktu</th>
+										<th class="text-center">Tanggal Mulai</th>
+										<th class="text-center">Tanggal Selesai</th>
+										<th class="text-center">Penyedia</th>
 										<th class="text-center">Aksi</th>
 									</tr>
 								</thead>
@@ -29,15 +29,19 @@
 									<?php $no = 1;
 									foreach ($kontrak as $k) : ?>
 										<tr>
-											<td><?= $no++ ?></td>
-											<td style="width: 35%"><?= $k['pekerjaan'] ?></td>
-											<td nowrap><?= rupiah($k['nilai']) ?></td>
-											<td><?= $k['nomor'] ?></td>
+											<td class="text-center"><?= $no++ ?></td>
+											<td>
+												<div style="width: 250px">
+													<?= $k['pekerjaan'] ?>
+												</div>
+											</td>
+											<td class="text-end" nowrap><?= rupiah($k['nilai']) ?></td>
+											<td class="text-center"><?= $k['nomor'] ?></td>
 											<td nowrap><?= date('d-m-Y', strtotime($k['tgl'])) ?></td>
-											<td><?= $k['jangka'] ?></td>
+											<td class="text-center"><?= $k['jangka'] ?></td>
 											<td nowrap><?= date('d-m-Y', strtotime($k['mulai'])) ?></td>
 											<td nowrap><?= date('d-m-Y', strtotime($k['selesai'])) ?></td>
-											<td nowrap><?= $k['penyedia'] ?></td>
+											<td><?= $k['penyedia'] ?></td>
 											<td class="text-center" nowrap>
 												<button class="btn btn-sm btn-warning waves-effect waves-light" data-id="<?= $k['id'] ?>" data-pagu="<?= $k['id_pagu'] ?>" id="btn-edit">Edit</button>
 												<button class="btn btn-sm btn-danger waves-effect waves-light" data-id="<?= $k['id'] ?>" id="btn-hapus">Hapus</button>
@@ -191,7 +195,7 @@
 				<h5 class="modal-title" id="modalKontrakTitle">Edit Data Kontrak</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
-			<form id="form-kontrak">
+			<form id="form-edit-kontrak">
 				<div class="modal-body">
 					<div class="form-group row">
 						<label for="" class="col-form-label col-md-3">Uraian Pekerjaan</label>

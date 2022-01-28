@@ -3,6 +3,163 @@
 class Admin_model extends CI_Model
 {
 
+	public function graph()
+	{
+		$year = 2021;
+		return $this->db->query('SELECT
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=1) AND (sumber like "DTU") AND (YEAR(tanggal)=2022))),0) AS `januari`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=1) AND (sumber like "DOKA") AND (YEAR(tanggal)=2022))),0) AS `januari2`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=1) AND (sumber like "DAK") AND (YEAR(tanggal)=2022))),0) AS `januari3`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=2) AND (sumber like "DTU") AND (YEAR(tanggal)=2022))),0) AS `februari`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=2) AND (sumber like "DOKA") AND (YEAR(tanggal)=2022))),0) AS `februari2`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=2) AND (sumber like "DAK") AND (YEAR(tanggal)=2022))),0) AS `februari3`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=3) AND (sumber like "DTU") AND (YEAR(tanggal)=2022))),0) AS `maret`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=3) AND (sumber like "DOKA") AND (YEAR(tanggal)=2022))),0) AS `maret2`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=3) AND (sumber like "DAK") AND (YEAR(tanggal)=2022))),0) AS `maret3`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=4) AND (sumber like "DTU") AND (YEAR(tanggal)=2022))),0) AS `april`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=4) AND (sumber like "DOKA") AND (YEAR(tanggal)=2022))),0) AS `april2`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=4) AND (sumber like "DAK") AND (YEAR(tanggal)=2022))),0) AS `april3`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=5) AND (sumber like "DTU") AND (YEAR(tanggal)=2022))),0) AS `mei`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=5) AND (sumber like "DOKA") AND (YEAR(tanggal)=2022))),0) AS `mei2`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=5) AND (sumber like "DAK") AND (YEAR(tanggal)=2022))),0) AS `mei3`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=6) AND (sumber like "DTU") AND (YEAR(tanggal)=2022))),0) AS `juni`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=6) AND (sumber like "DOKA") AND (YEAR(tanggal)=2022))),0) AS `juni2`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=6) AND (sumber like "DAK") AND (YEAR(tanggal)=2022))),0) AS `juni3`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=7) AND (sumber like "DTU") AND (YEAR(tanggal)=2022))),0) AS `juli`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=7) AND (sumber like "DOKA") AND (YEAR(tanggal)=2022))),0) AS `juli2`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=7) AND (sumber like "DAK") AND (YEAR(tanggal)=2022))),0) AS `juli3`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=8) AND (sumber like "DTU") AND (YEAR(tanggal)=2022))),0) AS `agustus`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=8) AND (sumber like "DOKA") AND (YEAR(tanggal)=2022))),0) AS `agustus2`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=8) AND (sumber like "DAK") AND (YEAR(tanggal)=2022))),0) AS `agustus3`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=9) AND (sumber like "DTU") AND (YEAR(tanggal)=2022))),0) AS `september`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=9) AND (sumber like "DOKA") AND (YEAR(tanggal)=2022))),0) AS `september2`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=9) AND (sumber like "DAK") AND (YEAR(tanggal)=2022))),0) AS `september3`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=10) AND (sumber like "DTU") AND (YEAR(tanggal)=2022))),0) AS `oktober`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=10) AND (sumber like "DOKA") AND (YEAR(tanggal)=2022))),0) AS `oktober2`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=10) AND (sumber like "DAK") AND (YEAR(tanggal)=2022))),0) AS `oktober3`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=11) AND (sumber like "DTU") AND (YEAR(tanggal)=2022))),0) AS `november`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=11) AND (sumber like "DOKA") AND (YEAR(tanggal)=2022))),0) AS `november2`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=11) AND (sumber like "DAK") AND (YEAR(tanggal)=2022))),0) AS `november3`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=12) AND (sumber like "DTU") AND (YEAR(tanggal)=2022))),0) AS `desember`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=12) AND (sumber like "DOKA") AND (YEAR(tanggal)=2022))),0) AS `desember2`,
+                ifnull((SELECT SUM(pagu) FROM (pagu)WHERE((Month(tanggal)=12) AND (sumber like "DAK") AND (YEAR(tanggal)=2022))),0) AS `desember3`,
+                IFNULL((SELECT SUM(pagu) FROM pagu), 0) as total
+                From pagu 
+                WHERE YEAR(tanggal) = 2021
+                GROUP BY YEAR(tanggal)
+        ');
+
+	}
+
+	public function all_sumber_dana()
+	{
+		return $this->db->query('
+								SELECT
+								 IFNULL((
+										SELECT SUM(k.jumlah) 
+										FROM keuangan as k
+										JOIN kontrak as kk ON kk.id = k.kontrak_id
+										WHERE YEAR(k.tanggal) = 2021 AND MONTH(k.tanggal) <= 1
+										), 0) as januari,
+								 IFNULL((
+										SELECT SUM(k.jumlah) 
+										FROM keuangan as k
+										JOIN kontrak as kk ON kk.id = k.kontrak_id
+										WHERE YEAR(k.tanggal) = 2021 AND MONTH(k.tanggal) <= 2
+										), 0) as februari,
+								 IFNULL((
+										SELECT SUM(k.jumlah) 
+										FROM keuangan as k
+										JOIN kontrak as kk ON kk.id = k.kontrak_id
+										WHERE YEAR(k.tanggal) = 2021 AND MONTH(k.tanggal) <= 3
+										), 0) as maret,
+								 IFNULL((
+										SELECT SUM(k.jumlah) 
+										FROM keuangan as k
+										JOIN kontrak as kk ON kk.id = k.kontrak_id
+										WHERE YEAR(k.tanggal) = 2021 AND MONTH(k.tanggal) <= 4
+										), 0) as april,
+								 IFNULL((
+									SELECT SUM(k.jumlah) 
+									FROM keuangan as k
+									JOIN kontrak as kk ON kk.id = k.kontrak_id
+									WHERE YEAR(k.tanggal) = 2021 AND MONTH(k.tanggal) <= 5
+								 	), 0) as mei,
+								 IFNULL((
+										SELECT SUM(k.jumlah) 
+										FROM keuangan as k
+										JOIN kontrak as kk ON kk.id = k.kontrak_id
+										WHERE YEAR(k.tanggal) = 2021 AND MONTH(k.tanggal) <= 6
+										), 0) as juni,
+								 IFNULL((
+										SELECT SUM(k.jumlah) 
+										FROM keuangan as k
+										JOIN kontrak as kk ON kk.id = k.kontrak_id
+										WHERE YEAR(k.tanggal) = 2021 AND MONTH(k.tanggal) <= 7
+										), 0) as juli,
+								 IFNULL((
+										SELECT SUM(k.jumlah) 
+										FROM keuangan as k
+										JOIN kontrak as kk ON kk.id = k.kontrak_id
+										WHERE YEAR(k.tanggal) = 2021 AND MONTH(k.tanggal) <= 8
+										), 0) as agustus,
+								 IFNULL((
+										SELECT SUM(k.jumlah) 
+										FROM keuangan as k
+										JOIN kontrak as kk ON kk.id = k.kontrak_id
+										WHERE YEAR(k.tanggal) = 2021 AND MONTH(k.tanggal) <= 9
+										), 0) as september,
+								 IFNULL((
+										SELECT SUM(k.jumlah) 
+										FROM keuangan as k
+										JOIN kontrak as kk ON kk.id = k.kontrak_id
+										WHERE YEAR(k.tanggal) = 2021 AND MONTH(k.tanggal) <= 10
+										), 0) as oktober,
+								 IFNULL((
+										SELECT SUM(k.jumlah) 
+										FROM keuangan as k
+										JOIN kontrak as kk ON kk.id = k.kontrak_id
+										WHERE YEAR(k.tanggal) = 2021 AND MONTH(k.tanggal) <= 11
+										), 0) as november,
+								 IFNULL((
+										SELECT SUM(k.jumlah) 
+										FROM keuangan as k
+										JOIN kontrak as kk ON kk.id = k.kontrak_id
+										WHERE YEAR(k.tanggal) = 2021 AND MONTH(k.tanggal) <= 12
+										), 0) as desember,
+								 IFNULL((
+       									SELECT SUM(pagu) FROM pagu WHERE tahun_pagu = 2021
+       									), 0) as total
+								FROM keuangan as keu
+								JOIN kontrak ON kontrak.id = keu.kontrak_id
+								JOIN pagu as p ON p.id = kontrak.pagu_id
+								WHERE YEAR(keu.tanggal) = 2021
+								GROUP BY YEAR(keu.tanggal)
+		');
+	}
+
+	public function pie()
+	{
+		return $this->db->query('
+					SELECT
+						IFNULL(
+							(SELECT SUM(pagu) FROM pagu WHERE tahun_pagu = 2021 AND sumber LIKE "DTU")
+							, 0) as DTU,
+						IFNULL(
+							(SELECT SUM(pagu) FROM pagu WHERE tahun_pagu = 2021 AND sumber LIKE "DOKA")
+							, 0) as DOKA,
+						IFNULL(
+							(SELECT SUM(pagu) FROM pagu WHERE tahun_pagu = 2021 AND sumber LIKE "DAK")
+							, 0) as DAK,
+						IFNULL(
+							(SELECT SUM(pagu) FROM pagu WHERE tahun_pagu = 2021)
+							, 0) as total
+					FROM pagu
+					WHERE tahun_pagu = 2021
+					GROUP BY tahun_pagu
+		');
+	}
+
 	public function store_data($data, $table)
 	{
 		return $this->db->insert($table, $data);
@@ -120,8 +277,7 @@ class Admin_model extends CI_Model
 
 	public function update_pagu($id_pagu, $data)
 	{
-		$this->db->where('id', $id_pagu);
-		return $this->db->update('pagu', $data);
+		return $this->db->where('id', $id_pagu)->update('pagu', $data);
 	}
 
 	public function show_pagu_data()
@@ -129,13 +285,21 @@ class Admin_model extends CI_Model
 		$this->db->select('g.id as id, p.id as id_program, p.kode_program as kode_program, p.nama_program as nm_p, k.kode_kegiatan as kode_k, k.nama_kegiatan as nm_k,
 							s.kode_subkegiatan as kode_sub, s.nama_subkegiatan as nama_sub, g.uraian_pekerjaan as pekerjaan,
 							g.lokasi as lokasi, g.volume as volume, t.nama_satuan as satuan, g.pagu as pagu, g.tanggal as tanggal, 
-							j.nama_jenis as jenis');
+							j.nama_jenis as jenis, jb.nama as belanja');
 		$this->db->from('pagu as g');
 		$this->db->join('subkegiatan as s', 's.id = g.subkegiatan_id', 'LEFT');
 		$this->db->join('kegiatan as k', 'k.id = s.kegiatan_id', 'LEFT');
 		$this->db->join('program as p', 'p.id = k.program_id', 'LEFT');
 		$this->db->join('jenis_pengadaan as j', 'j.id = g.jenis_id', 'LEFT');
 		$this->db->join('satuan as t', 't.id = g.satuan_id', 'LEFT');
+		$this->db->join('jenis_belanja as jb', 'jb.id = g.belanja_id', 'LEFT');
+		return $this->db->get();
+	}
+
+	public function total_anggaran_pagu()
+	{
+		$this->db->select('SUM(pagu) as jumlah');
+		$this->db->from('pagu');
 		return $this->db->get();
 	}
 
@@ -166,6 +330,7 @@ class Admin_model extends CI_Model
 			return false;
 		}
 	}
+
 	public function delete_penugasan_data($id)
 	{
 		$this->db->where('id', $id);
@@ -193,10 +358,10 @@ class Admin_model extends CI_Model
 		return $this->db->insert('satuan', $data);
 	}
 
-	public function ambil_data_pagu($id)
+	public function data_pagu_awal($id)
 	{
-		$this->db->select('g.id as id, g.uraian_pekerjaan as pekerjaan, p.nama_program as program, k.nama_kegiatan as kegiatan, s.nama_subkegiatan as sub,
-							g.pagu');
+		$this->db->select('g.id as id, g.uraian_pekerjaan as pekerjaan, p.nama_program as program, k.nama_kegiatan as kegiatan, 
+							s.nama_subkegiatan as sub, g.pagu');
 		$this->db->from('pagu as g');
 		$this->db->join('subkegiatan as s', 's.id = g.subkegiatan_id');
 		$this->db->join('kegiatan as k', 'k.id = s.kegiatan_id');
@@ -205,9 +370,29 @@ class Admin_model extends CI_Model
 		return $this->db->get();
 	}
 
+	public function ambil_data_pagu($id)
+	{
+		$this->db->select('g.id as id, g.uraian_pekerjaan as pekerjaan, p.nama_program as program, k.nama_kegiatan as kegiatan, 
+							s.nama_subkegiatan as sub, g.pagu, kontrak.nilai_kontrak, kontrak.no_kontrak, kontrak.jangka,
+							kontrak.mulai, kontrak.selesai, kontrak.penyedia, kontrak.tgl_kontrak');
+		$this->db->from('pagu as g');
+		$this->db->join('subkegiatan as s', 's.id = g.subkegiatan_id');
+		$this->db->join('kegiatan as k', 'k.id = s.kegiatan_id');
+		$this->db->join('program as p', 'p.id = k.program_id');
+		$this->db->join('kontrak', 'kontrak.pagu_id = g.id');
+		$this->db->where('g.id', $id);
+		return $this->db->get();
+	}
+
 	public function store_data_kontrak($data)
 	{
 		return $this->db->insert('kontrak', $data);
+	}
+
+	public function update_kontrak_data($id, $data)
+	{
+		$this->db->where('pagu_id', $id);
+		return $this->db->update('kontrak', $data);
 	}
 
 	public function get_kontrak_data()
@@ -361,10 +546,10 @@ class Admin_model extends CI_Model
 	public function count_all_value()
 	{
 		return $this->db->query('
-		SELECT SUM(p.pagu) as pagu, SUM(k.nilai_kontrak) as kontrak
-		FROM kontrak as k
-		JOIN pagu as p ON p.id = k.pagu_id
-        JOIN scope_konsultan as sc ON sc.pekerjaan_id = k.id
+		SELECT SUM(p.pagu) as pagu, SUM(k.nilai_kontrak) as kontrak, SUM(k.sisa_kontrak) as sisa
+		FROM pagu as p
+		LEFT JOIN kontrak as k ON k.pagu_id = p.id
+        LEFT JOIN scope_konsultan as sc ON sc.pekerjaan_id = k.id
 	');
 	}
 
@@ -372,9 +557,9 @@ class Admin_model extends CI_Model
 	{
 		return $this->db->query('
 		SELECT pg.id, pg.nama_program, sk.kegiatan_id, kg.id as id_kegiatan, kg.nama_kegiatan , sk.nama_subkegiatan, p.subkegiatan_id, SUM(p.pagu) as pagu, SUM(k.nilai_kontrak) as kontrak
-		FROM kontrak as k
-		JOIN pagu as p ON p.id = k.pagu_id
-        JOIN scope_konsultan as sc ON sc.pekerjaan_id = k.id
+		FROM pagu as p
+		JOIN kontrak as k ON k.pagu_id = p.id
+        LEFT JOIN scope_konsultan as sc ON sc.pekerjaan_id = k.id
 		JOIN subkegiatan as sk ON sk.id = p.subkegiatan_id
 		JOIN kegiatan as kg ON kg.id = sk.kegiatan_id
 		JOIN program as pg ON pg.id = kg.program_id
@@ -387,11 +572,11 @@ class Admin_model extends CI_Model
 	{
 		return $this->db->query('
 		SELECT sk.kegiatan_id, kg.id, kg.program_id, kg.nama_kegiatan, sk.nama_subkegiatan, p.subkegiatan_id, SUM(p.pagu) AS pagu, SUM(k.nilai_kontrak) AS kontrak
-		FROM kontrak AS k
-		JOIN pagu AS p ON p.id = k.pagu_id
+		FROM pagu AS p
+		JOIN kontrak AS k ON k.pagu_id = p.id
 		JOIN subkegiatan AS sk ON sk.id = p.subkegiatan_id
 		JOIN kegiatan AS kg	ON kg.id = sk.kegiatan_id
-		JOIN scope_konsultan AS sc ON sc.pekerjaan_id = k.id
+		LEFT JOIN scope_konsultan AS sc ON sc.pekerjaan_id = k.id
 		GROUP BY kg.id
 		');
 	}
@@ -400,9 +585,9 @@ class Admin_model extends CI_Model
 	{
 		return $this->db->query('
 		SELECT sk.id, sk.nama_subkegiatan, pg.id as idp, sk.kegiatan_id as idk, p.subkegiatan_id, SUM(p.pagu) as pagu, SUM(k.nilai_kontrak) as kontrak
-		FROM kontrak as k
-		JOIN pagu as p ON p.id = k.pagu_id
-		JOIN scope_konsultan as sc ON sc.pekerjaan_id = k.id
+		FROM pagu as p
+		JOIN kontrak as k ON k.pagu_id = p.id
+		LEFT JOIN scope_konsultan as sc ON sc.pekerjaan_id = k.id
 		JOIN subkegiatan as sk ON sk.id = p.subkegiatan_id
 		JOIN kegiatan as kg ON kg.id = sk.kegiatan_id
 		JOIN program as pg ON pg.id = kg.program_id
@@ -412,17 +597,18 @@ class Admin_model extends CI_Model
 
 	public function get_data_rfk()
 	{
-		$this->db->select('s.id, k.nilai_kontrak, k.id as id_kontrak, k.no_kontrak, k.penyedia, p.uraian_pekerjaan, p.pagu, p.lokasi, SUM(pr.bobot_total) as fisik,
-							k.jangka, k.mulai, k.selesai, sk.id as subkeg, kg.id as idk, pg.id as idp');
-		$this->db->from('scope_konsultan as s');
-		$this->db->join('kontrak as k', 'k.id = s.pekerjaan_id');
-		$this->db->join('pagu as p', 'p.id = k.pagu_id');
-		$this->db->join('rab as r', 'r.pekerjaan_id = s.id');
-		$this->db->join('progress_report as pr', 'pr.rab_id = r.id');
+		$this->db->select('s.id, p.id as id_pagu, k.nilai_kontrak, k.id as id_kontrak, k.no_kontrak, k.penyedia, p.uraian_pekerjaan, p.pagu, p.lokasi, SUM(pr.bobot_total) as fisik,
+							k.jangka, k.mulai, k.selesai, sk.id as subkeg, kg.id as idk, pg.id as idp, SUM(fa.persen) as persen');
+		$this->db->from('pagu as p');
+		$this->db->join('kontrak as k', 'k.pagu_id = p.id', 'left');
+		$this->db->join('scope_konsultan as s', 's.pekerjaan_id = k.id', 'left');
+		$this->db->join('rab as r', 'r.pekerjaan_id = s.id', 'left');
+		$this->db->join('progress_report as pr', 'pr.rab_id = r.id', 'left');
 		$this->db->join('subkegiatan as sk', 'sk.id = p.subkegiatan_id');
 		$this->db->join('kegiatan as kg', 'kg.id = sk.kegiatan_id');
 		$this->db->join('program as pg', 'pg.id = kg.program_id');
-		$this->db->group_by('r.pekerjaan_id');
+		$this->db->join('fisik_admin as fa', 'fa.kontrak_id = k.id', 'left');
+		$this->db->group_by('k.id');
 		return $this->db->get();
 	}
 
@@ -446,22 +632,14 @@ class Admin_model extends CI_Model
 
 	public function show_keuangan_data($pekerjaan, $bulan)
 	{
-		// CARA 1
-		/* return $this->db->query('
-		SELECT k.*, p.uraian_pekerjaan as paket
-		FROM keuangan as k
-		JOIN kontrak as r ON r.id = k.kontrak_id
-		JOIN pagu as p ON p.id = r.pagu_id
-		WHERE k.kontrak_id = ' . $pekerjaan . ' AND MONTH(k.tanggal) = ' . $bulan . '
-		'); */
-
-		// CARA 2
 		$this->db->select('k.*, p.uraian_pekerjaan as paket');
 		$this->db->from('keuangan as k');
 		$this->db->join('kontrak as r', 'r.id = k.kontrak_id');
 		$this->db->join('pagu as p', 'p.id = r.pagu_id');
 		$this->db->where('k.kontrak_id', $pekerjaan);
-		$this->db->where('MONTH(k.tanggal)', $bulan);
+		if ($bulan != '') {
+			$this->db->where('MONTH(k.tanggal)', $bulan);
+		}
 		return $this->db->get();
 	}
 
@@ -555,5 +733,177 @@ class Admin_model extends CI_Model
 			];
 		}
 		return $data;
+	}
+
+	public function show_parent($pekerjaan, $bulan, $sumber)
+	{
+		return $this->db->query('
+			SELECT x.id, x.nama_program, x.nama_kegiatan, x.nama_subkegiatan, x.uraian_pekerjaan, x.nilai_kontrak, x.bobot, y.keuangan,
+			       x.lokasi, x.pagu, y.persen_kontrak, x.persen_fisik, x.jangka, x.selesai, x.mulai, x.penyedia,
+			       x.no_kontrak
+			FROM (
+				SELECT k.id, nama_program, nama_kegiatan, nama_subkegiatan, uraian_pekerjaan,
+				       nilai_kontrak, SUM(pr.bobot_total) as bobot, pg.lokasi, pg.pagu,
+				       SUM(fa.persen) as persen_fisik, k.jangka, k.mulai, k.selesai, k.penyedia,
+				       k.no_kontrak
+				FROM pagu as pg
+				JOIN kontrak as k ON k.pagu_id = pg.id
+				LEFT JOIN scope_konsultan as sc ON sc.pekerjaan_id = k.id
+				LEFT JOIN rab as r ON r.pekerjaan_id = sc.pekerjaan_id
+				LEFT JOIN progress_report as pr ON pr.rab_id = r.id
+				JOIN subkegiatan as sk ON sk.id = pg.subkegiatan_id
+				JOIN kegiatan as kg ON kg.id = sk.kegiatan_id
+				JOIN program as p ON p.id = kg.program_id
+				LEFT JOIN fisik_admin as fa ON fa.kontrak_id = k.id
+				WHERE pg.id = ' . $pekerjaan . ' AND fa.bulan = ' . $bulan . '
+			) as x
+			JOIN (
+				SELECT k.id, SUM(keu.jumlah) as keuangan, SUM(keu.persentase_kontrak) as persen_kontrak
+				FROM keuangan as keu
+				JOIN kontrak as k ON k.id = keu.kontrak_id
+				JOIN pagu as pg ON pg.id = k.pagu_id
+				WHERE pg.id = ' . $pekerjaan . ' AND MONTH(keu.tanggal) = ' . $bulan . '
+			) as y ON y.id = x.id
+		');
+	}
+
+
+	public function total_dinas_by_month($bulan)
+	{
+		return $this->db->query('
+			SELECT sk.id as ids, pg.nama_program, pg.id as idp, kg.id as idkeg, SUM(p.pagu) as pagu, SUM(k.nilai_kontrak) as nilai_kontrak,
+			       SUM(keu.jumlah) as keuangan, SUM(keu.persentase_kontrak) as persen_kontrak
+			FROM pagu as p
+			JOIN kontrak as k ON k.pagu_id = p.id
+			JOIN subkegiatan as sk ON sk.id = p.subkegiatan_id
+			JOIN kegiatan as kg ON kg.id = sk.kegiatan_id
+			JOIN program as pg ON pg.id = kg.program_id
+			JOIN keuangan as keu ON keu.kontrak_id = k.id
+			WHERE MONTH(keu.tanggal) = ' . $bulan . '
+		');
+	}
+
+	public function total_program_by_month($bulan)
+	{
+		return $this->db->query('
+			SELECT sk.id as ids, pg.nama_program, pg.id as idp, kg.id as idkeg, SUM(p.pagu) as pagu, SUM(k.nilai_kontrak) as nilai_kontrak
+			FROM pagu as p
+			JOIN kontrak as k ON k.pagu_id = p.id
+			JOIN subkegiatan as sk ON sk.id = p.subkegiatan_id
+			JOIN kegiatan as kg ON kg.id = sk.kegiatan_id
+			JOIN program as pg ON pg.id = kg.program_id
+			JOIN keuangan as keu ON keu.kontrak_id = k.id
+			WHERE MONTH(keu.tanggal) = ' . $bulan . '
+			GROUP BY pg.id
+			ORDER BY pg.nama_program ASC 
+		');
+	}
+
+	public function total_kegiatan_by_month($bulan)
+	{
+		return $this->db->query('
+			SELECT sk.id as ids, kg.nama_kegiatan, pg.id as idp, kg.id as idkeg, SUM(p.pagu) as pagu, SUM(k.nilai_kontrak) as nilai_kontrak
+			FROM pagu as p
+			JOIN kontrak as k ON k.pagu_id = p.id
+			JOIN subkegiatan as sk ON sk.id = p.subkegiatan_id
+			JOIN kegiatan as kg ON kg.id = sk.kegiatan_id
+			JOIN program as pg ON pg.id = kg.program_id
+			JOIN keuangan as keu ON keu.kontrak_id = k.id
+			WHERE MONTH(keu.tanggal) = ' . $bulan . '
+			GROUP BY kg.id
+		');
+	}
+
+	public function total_subkeg_by_month($bulan)
+	{
+		return $this->db->query('
+			SELECT sk.id as ids, pg.id as idp, kg.id as idkeg, SUM(p.pagu) as pagu, SUM(k.nilai_kontrak) as nilai_kontrak
+			FROM pagu as p
+			JOIN kontrak as k ON k.pagu_id = p.id
+			JOIN subkegiatan as sk ON sk.id = p.subkegiatan_id
+			JOIN kegiatan as kg ON kg.id = sk.kegiatan_id
+			JOIN program as pg ON pg.id = kg.program_id
+			JOIN keuangan as keu ON keu.kontrak_id = k.id
+			WHERE MONTH(keu.tanggal) = ' . $bulan . '
+			GROUP BY sk.id
+		');
+	}
+
+	public function show_parent2($bulan)
+	{
+		return $this->db->query('
+			SELECT sk.id as ids, kg.id as idkeg, pg.id as idp, SUM(k.nilai_kontrak) as nilai_kontrak, SUM(p.pagu) as pagu, SUM(keu.jumlah) as keuangan, SUM(keu.persentase_kontrak) as persen_kontrak,
+			       pg.nama_program, kg.nama_kegiatan, sk.nama_subkegiatan, p.uraian_pekerjaan,
+			       k.jangka, k.mulai, k.selesai, k.penyedia, k.no_kontrak, p.lokasi
+			FROM kontrak as k
+			JOIN pagu as p ON p.id = k.pagu_id
+			JOIN subkegiatan as sk ON sk.id = p.subkegiatan_id
+			JOIN kegiatan as kg ON kg.id = sk.kegiatan_id
+			JOIN program as pg ON pg.id = kg.program_id
+			JOIN keuangan as keu ON keu.kontrak_id = k.id
+			WHERE MONTH(keu.tanggal) = ' . $bulan . '
+			GROUP BY sk.id
+		');
+	}
+
+	public function show_total_fisik()
+	{
+		$this->db->select('f.id, p.uraian_pekerjaan as pekerjaan, SUM(f.persen) as persen');
+		$this->db->from('fisik_admin as f');
+		$this->db->join('kontrak as k', 'k.id = f.kontrak_id');
+		$this->db->join('pagu as p', 'p.id = k.pagu_id');
+		$this->db->group_by('k.id');
+		return $this->db->get();
+	}
+
+	public function show_fisik_data($pekerjaan, $bulan)
+	{
+		$this->db->select('f.id, p.uraian_pekerjaan as pekerjaan, f.persen, f.bulan');
+		$this->db->from('fisik_admin as f');
+		$this->db->join('kontrak as k', 'k.id = f.kontrak_id');
+		$this->db->join('pagu as p', 'p.id = k.pagu_id');
+		$this->db->where('k.id', $pekerjaan);
+		if ($bulan != '') {
+			$this->db->where('f.bulan', $bulan);
+		}
+		return $this->db->get();
+	}
+
+	public function store_fisik($data)
+	{
+		return $this->db->insert('fisik_admin', $data);
+	}
+
+	public function update_detil_fisik($id, $data)
+	{
+		$this->db->where('id', $id);
+		return $this->db->update('fisik_admin', $data);
+	}
+
+	public function show_jenis_belanja_parent()
+	{
+		return $this->db->query('SELECT id, nama, parent_id FROM jenis_belanja WHERE parent_id IS NULL');
+	}
+
+	public function show_jenis_belanja_child()
+	{
+		return $this->db->query('SELECT id, nama, parent_id FROM jenis_belanja WHERE parent_id IS NOT NULL');
+	}
+
+	public function show_jenisbelanja_child()
+	{
+		return $this->db->query('
+								SELECT
+									p.id as id_parent,
+									p.nama as parent_name,
+									c.id as child_id,
+									c.nama as child_name
+								FROM 
+									jenis_belanja p
+								LEFT JOIN jenis_belanja c
+									ON c.parent_id = p.id
+								WHERE
+									p.parent_id IS NULL
+		');
 	}
 }

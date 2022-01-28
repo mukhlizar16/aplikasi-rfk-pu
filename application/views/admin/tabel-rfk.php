@@ -16,17 +16,6 @@
 						<div class="mb-5">
 							<form action="<?= site_url('admin/detil_rfk') ?>" method="post">
 								<div class="form-group row mb-2">
-									<label for="pekerjaan-rfk" class="col-form-label col-md-2">Pekerjaan</label>
-									<div class="col-md-4">
-										<select name="pekerjaan" id="pekerjaan-rfk" class="form-control">
-											<option value="">--Pilih--</option>
-											<?php foreach ($item as $i) : ?>
-												<option value="<?= $i->id ?>"><?= $i->uraian_pekerjaan ?></option>
-											<?php endforeach ?>
-										</select>
-									</div>
-								</div>
-								<div class="form-group row mb-2">
 									<label for="bulan-rfk" class="col-form-label col-md-2">Bulan</label>
 									<div class="col-md-4">
 										<select name="bulan" id="bulan-rfk" class="form-control">
@@ -76,7 +65,7 @@
 										</td>
 										<td style="font-weight: bold;" nowrap><?= rupiah($dinas->pagu) ?></td>
 										<td style="font-weight: bold;" nowrap><?= rupiah($dinas->kontrak) ?></td>
-										<td style="font-weight: bold;" nowrap><?= rupiah($dinas->pagu - $dinas->kontrak) ?></td>
+										<td style="font-weight: bold;" nowrap><?= rupiah($dinas->sisa) ?></td>
 									</tr>
 									<?php foreach ($program as $p) : ?>
 										<tr>
@@ -114,7 +103,7 @@
 												<?php $no = 1;
 												foreach ($item as $i) : ?>
 													<?php foreach ($keuangan as $keu) : ?>
-														<?php if ($i->subkeg == $sk->id && $i->idk == $k->id && $i->idp == $p->id && $keu->id_kontrak == $i->id_kontrak) : ?>
+														<?php if (($i->subkeg == $sk->id) && ($i->idk == $k->id) && ($i->idp == $p->id) && ($keu->id_kontrak == $i->id_kontrak)) : ?>
 															<tr>
 																<td class="text-center"><?= $no++ ?></td>
 																<td><?= $i->uraian_pekerjaan ?></td>
@@ -122,12 +111,18 @@
 																<td nowrap><?= rupiah($i->pagu) ?></td>
 																<td nowrap><?= rupiah($i->nilai_kontrak) ?></td>
 																<td nowrap><?= rupiah($i->pagu - $i->nilai_kontrak) ?></td>
-																<td class="text-center"><?= round($i->fisik, 2) ?></td>
+																<td class="text-center">
+																	<?php if ($i->persen != '' || $i->persen != null) : ?>
+																		<?= round(($i->fisik + $i->persen), 2) ?>
+																	<?php else : ?>
+																		<?= round($i->fisik, 2) ?>
+																	<?php endif; ?>
+																</td>
 																<td nowrap>
 																	<?= rupiah($keu->jumlah) ?>
 																</td>
 																<td>
-																	<?= str_replace('.', ',', $keu->persen_kontrak) ?>
+																	<?= str_replace('.', ',', round($keu->persen_kontrak, 2)) ?>
 																</td>
 																<td class="text-center"><?= $i->jangka ?></td>
 																<td class="text-center" nowrap><?= date('d-m-Y', strtotime($i->mulai)) ?></td>

@@ -20,17 +20,6 @@
 						<div class="mb-5">
 							<form action="<?= site_url('admin/detil_rfk') ?>" method="post">
 								<div class="form-group row mb-2">
-									<label for="pekerjaan-rfk" class="col-form-label col-md-2">Pekerjaan</label>
-									<div class="col-md-4">
-										<select name="pekerjaan" id="pekerjaan-rfk" class="form-control">
-											<option value="">--Pilih--</option>
-											<?php foreach ($item as $i) : ?>
-												<option value="<?= $i->id_pagu ?>" <?= @ $_SESSION['pekerjaan-rfk'] == $i->id_pagu ? 'selected' : '' ?>><?= $i->uraian_pekerjaan ?></option>
-											<?php endforeach ?>
-										</select>
-									</div>
-								</div>
-								<div class="form-group row mb-2">
 									<label for="bulan-rfk" class="col-form-label col-md-2">Bulan</label>
 									<div class="col-md-4">
 										<select name="bulan" id="bulan-rfk" class="form-control">
@@ -38,17 +27,6 @@
 											<?php for ($i = 1; $i <= 12; $i++) : ?>
 												<option value="<?= $i ?>" <?= @ $_SESSION['bulan-rfk'] == $i ? 'selected' : '' ?>><?= $i ?></option>
 											<?php endfor ?>
-										</select>
-									</div>
-								</div>
-								<div class="form-group row mb-2">
-									<label for="sumber" class="col-md-2 col-form-label">Sumber Dana</label>
-									<div class="col-md-4">
-										<select name="sumber" id="sumber" class="form-control">
-											<option value="">--Pilih--</option>
-											<option value="1">DTU</option>
-											<option value="2">DAK</option>
-											<option value="3">DOKA</option>
 										</select>
 									</div>
 								</div>
@@ -92,41 +70,97 @@
 								</tr>
 								</thead>
 								<tbody>
-								<?php $no = 1;
-								foreach ($result as $r) : ?>
-									<tr>
-										<td><?= get_abjad($no++) ?></td>
-										<td colspan="13" style="font-weight: bold"><?= $r->nama_program ?></td>
-									</tr>
-									<tr>
-										<td></td>
-										<td colspan="13" style="font-weight: bold"><?= $r->nama_kegiatan ?></td>
-									</tr>
-									<tr>
-										<td></td>
-										<td colspan="13" style="font-weight: bold"><?= $r->nama_subkegiatan ?></td>
-									</tr>
-									<tr>
-										<td><?= $no++ ?></td>
-										<td><?= $r->uraian_pekerjaan ?></td>
-										<td><?= $r->lokasi ?></td>
-										<td nowrap><?= rupiah($r->pagu) ?></td>
-										<td nowrap><?= rupiah($r->nilai_kontrak) ?></td>
-										<td nowrap><?= rupiah($r->pagu - $r->nilai_kontrak) ?></td>
-										<td nowrap>
-											<?= $r->bobot != '' ? round($r->bobot + $r->persen_fisik, 2) : round($r->persen_fisik, 2) ?>
-										</td>
-										<td nowrap><?= rupiah($r->keuangan) ?></td>
-										<td nowrap class="text-center">
-											<?= $r->persen_kontrak >= 100 ? '100' : $r->persen_kontrak ?>
-										</td>
-										<td class="text-center"><?= $r->jangka ?></td>
-										<td class="text-center" nowrap><?= date('d-m-Y', strtotime($r->mulai)) ?></td>
-										<td class="text-center" nowrap><?= date('d-m-Y', strtotime($r->selesai)) ?></td>
-										<td><?= $r->penyedia ?></td>
-										<td><?= $r->no_kontrak ?></td>
-									</tr>
-								<?php endforeach ?>
+								<tr>
+									<td colspan="3">
+										<b>Dinas Pekerjaan Umum dan Penataan Ruang Kabupaten Aceh Barat</b>
+									</td>
+									<td>
+										<b><?= rupiah($dinas->pagu) ?></b>
+									</td>
+									<td nowrap>
+										<b><?= rupiah($dinas->nilai_kontrak) ?></b>
+									</td>
+									<td nowrap>
+										<b><?= rupiah($dinas->pagu - $dinas->nilai_kontrak) ?></b>
+									</td>
+									<td></td>
+									<td nowrap><b><?= rupiah($dinas->keuangan) ?></b></td>
+									<td nowrap><b><?= round($dinas->persen_kontrak, 2) ?></b></td>
+								</tr>
+								<?php foreach ($program as $pg) : ?>
+									<?php $keg=1; foreach ($kegiatan as $kg) : ?>
+										<?php $sub= 1; foreach ($subkeg as $sk) : ?>
+											<?php if ($pg->idp == $kg->idp) : ?>
+												<?php if ($kg->idkeg == $sk->idkeg && $kg->idp == $pg->idp) : ?>
+													<?php $no = 1;
+													foreach ($result2 as $r) : ?>
+														<?php if ($sk->ids == $r->ids && $r->idkeg == $kg->idkeg && $r->idp == $pg->idp) : ?>
+															<tr>
+																<td colspan="3" style="font-weight: bold">
+																	<?= $pg->nama_program ?>
+																</td>
+																<td>
+																	<b><?= rupiah($pg->pagu) ?></b>
+																</td>
+																<td>
+																	<b><?= rupiah($pg->nilai_kontrak) ?></b>
+																</td>
+															</tr>
+														<!-- kegiatan -->
+															<tr>
+																<td><?= get_abjad($keg++) ?></td>
+																<td colspan="2" style="font-weight: bold">
+																	<?= $kg->nama_kegiatan ?>
+																</td>
+																<td style="font-weight: bold">
+																	<?= rupiah($kg->pagu) ?>
+																</td>
+																<td style="font-weight: bold">
+																	<?= rupiah($kg->nilai_kontrak) ?>
+																</td>
+															</tr>
+														<!-- subkegiatan -->
+															<tr>
+																<td><?= get_abjad_kecil($sub++) ?></td>
+																<td colspan="2"
+																	style="font-weight: bold"><?= $r->nama_subkegiatan ?></td>
+																<td nowrap>
+																	<b><?= rupiah($sk->pagu) ?></b>
+																</td>
+																<td nowrap>
+																	<b><?= rupiah($sk->nilai_kontrak) ?></b>
+																</td>
+															</tr>
+															<tr>
+																<td><?= $no++ ?></td>
+																<td><?= $r->uraian_pekerjaan ?></td>
+																<td><?= $r->lokasi ?></td>
+																<td nowrap><?= rupiah($r->pagu) ?></td>
+																<td nowrap><?= rupiah($r->nilai_kontrak) ?></td>
+																<td nowrap><?= rupiah($r->pagu - $r->nilai_kontrak) ?></td>
+																<td nowrap>
+
+																</td>
+																<td nowrap><?= rupiah($r->keuangan) ?></td>
+																<td nowrap class="text-center">
+																	<?= $r->persen_kontrak >= 100 ? '100' : $r->persen_kontrak ?>
+																</td>
+																<td class="text-center"><?= $r->jangka ?></td>
+																<td class="text-center"
+																	nowrap><?= date('d-m-Y', strtotime($r->mulai)) ?></td>
+																<td class="text-center"
+																	nowrap><?= date('d-m-Y', strtotime($r->selesai)) ?></td>
+																<td><?= $r->penyedia ?></td>
+																<td><?= $r->no_kontrak ?></td>
+															</tr>
+														<?php endif; ?>
+													<?php endforeach ?>
+												<?php endif ?>
+											<?php endif; ?>
+										<?php endforeach; ?>
+									<?php endforeach; ?>
+								<?php endforeach; ?>
+
 								</tbody>
 							</table>
 						</div>

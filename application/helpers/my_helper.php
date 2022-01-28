@@ -93,6 +93,16 @@ function get_abjad_kecil($index)
 	return $abjad[$index];
 }
 
+/**
+ * 
+ * @param angka bulan
+ */
+function get_bulan_huruf($index)
+{
+	$bulan = array(1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember');
+	return $bulan[$index];
+}
+
 function upload_dokumen($name = '')
 {
 	$ci = &get_instance();

@@ -158,9 +158,16 @@ $(document).ready(function () {
 		$("#subkegiatan-id").val(id);
 	});
 
-	// pagu
+	/**
+	 *
+	 * @param pagu
+	 * TODO: adding pagu
+	 */
 	$("#btn-add-pagu").click(function () {
 		$("#tambahPaguModal").modal("show");
+	});
+	$('#tambahPaguModal').on('shown.bs.modal', function () {
+		$('#form-pagu')[0].reset();
 	});
 
 	//ajax get data kegiatan & sub kegiatan
@@ -538,17 +545,37 @@ $(document).ready(function () {
 			},
 			dataType: "json",
 			success: function (data) {
-				$("#tambahPaguModal").modal("show");
-				$("#modalPaguTitle").html("Update Data");
-				$("#btn-submit-pagu").html("Update");
-				$("#tipe").val("update");
-				$("#id-pagu").val(data.id);
-				$("#pekerjaan").val(data.uraian);
-				$("#lokasi").val(data.lokasi);
-				$("#volume").val(data.volume);
-				$("#pagu").val(data.pagu);
-				$("#jenis").val(data.jenis);
+				$("#editPaguModal").modal("show");
+				$("#id-edit-pagu").val(data.id);
+				$("#edit-pekerjaan").val(data.uraian_pekerjaan);
+				$("#edit-lokasi").val(data.lokasi);
+				$("#edit-volume").val(data.volume);
+				$("#edit-pagu").val(formatRupiah(data.pagu));
+				$("#edit-jenis").val(data.jenis_id);
+				$("#edit-satuan").val(data.satuan_id);
+				$("#edit-sumber").val(data.sumber);
+				$("#edit-belanja").val(data.belanja_id);
+				$("#edit-tahun-pagu").val(data.tahun_pagu);
 			},
+		});
+	});
+	$('#form-edit-pagu').submit(function (e) {
+		e.preventDefault();
+		$.ajax({
+			url: $(this).attr('action'),
+			method: 'POST',
+			data: $(this).serialize(),
+			dataType: 'JSON',
+			success: function (response) {
+				if (response.status == 'sukses') {
+					$('#editPaguModal').modal('hide');
+					Swal.fire('Sukses !', response.pesan, 'success').then(function () {
+						location.reload()
+					})
+				} else {
+					Swal.fire('Error', response.pesan, 'error')
+				}
+			}
 		});
 	});
 	$("#tabel-pagu").on("click", "#btn-hapus", function () {
@@ -589,10 +616,10 @@ $(document).ready(function () {
 		var id = $(this).val();
 		e.preventDefault();
 		$.ajax({
-			url: "get_pagu_data",
+			url: "get_pagu",
 			type: "post",
 			data: {
-				id: id,
+				id: id
 			},
 			dataType: "json",
 			beforeSend: function () {
@@ -610,20 +637,17 @@ $(document).ready(function () {
 				$("#program-kontrak").val(data.program);
 				$("#kegiatan-kontrak").val(data.kegiatan);
 				$("#subkegiatan-kontrak").val(data.sub);
-				$("#pagu-kontrak")
-					.val(formatRupiah(data.pagu))
-					.attr("readonly", "readonly");
+				console.log(data.pagu)
+				$("#pagu-kontrak").val(formatRupiah(data.pagu)).attr("readonly", "readonly");
 				$("#nilai-kontrak").on("change keyup", function () {
 					var n = $("#nilai-kontrak").cleanVal();
 					var p = $("#pagu-kontrak").val().split(".").join("");
 					var sisa = p - n;
 					$("#sisa-kontrak").val(sisa).trigger("input");
 				});
-				$("#sisa-kontrak")
-					.mask("000.000.000.000.000", {
-						reverse: true,
-					})
-					.attr("readonly", "readonly");
+				$("#sisa-kontrak").mask("000.000.000.000.000", {
+					reverse: true,
+				}).attr("readonly", "readonly");
 			},
 		});
 	});
@@ -667,6 +691,7 @@ $(document).ready(function () {
 		// $('#pagu-kontrak option[value="' + id + '"]').attr('selected', 'selected');
 		$("#pilihan-edit-kontrak").val(id).trigger("change");
 	});
+
 	$("#pilihan-edit-kontrak").change(function (e) {
 		var id = $(this).val();
 		e.preventDefault();
@@ -681,25 +706,41 @@ $(document).ready(function () {
 				$("#program-edit-kontrak").val(data.program);
 				$("#kegiatan-edit-kontrak").val(data.kegiatan);
 				$("#subkegiatan-edit-kontrak").val(data.sub);
-				$("#pagu-edit-kontrak")
-					.val(formatRupiah(data.pagu))
-					.attr("readonly", "readonly");
-				$("#nilai-edit-kontrak").val(formatRupiah(data.nilai));
-				$("#sisa-edit-kontrak").val(
-					$("#pagu-edit-kontrak").val().split(".").join("") -
-						$("#nilai-edit-kontrak").val().split(".").join("")
-				);
+				$('#nomor-edit-kontrak').val(data.no_kontrak);
+				$('#waktu-edit-kontrak').val(data.jangka);
+				$('#tanggal-edit-kontrak').val(data.tgl_kontrak);
+				$('#mulai-edit-kontrak').val(data.tgl_mulai);
+				$('#selesai-edit-kontrak').val(data.tgl_selesai);
+				$('#penyedia-edit-kontrak').val(data.penyedia);
+				$("#pagu-edit-kontrak").val(formatRupiah(data.pagu)).attr("readonly", "readonly");
 				$("#nilai-edit-kontrak").on("change keyup", function () {
-					var n = $("#nilai-edit-kontrak").val().split(".").join("");
+					var nilai_kontrak = $("#nilai-edit-kontrak").val().split('.').join('');
 					var p = $("#pagu-edit-kontrak").val().split(".").join("");
-					var sisa = p - n;
-					$("#sisa-edit-kontrak")
-						.val(formatRupiah(sisa.toString()))
-						.trigger("input");
+					var sisa = p - nilai_kontrak.split(',').join('.');
+					$("#sisa-edit-kontrak").val(formatRupiah(sisa.toFixed(2).replace('.', ',').toString())).trigger("input");
 				});
 			},
 		});
 	});
+	$('#form-edit-kontrak').submit(function (e) {
+		e.preventDefault();
+		$.ajax({
+			url: 'update_kontrak',
+			method: 'POST',
+			data: $(this).serialize(),
+			dataType: 'JSON',
+			success: function (response) {
+				if (response.status == 'sukses') {
+					$("#editKontrakModal").modal("show");
+					Swal.fire('Sukses !', response.message, 'success').then(function () {
+						location.reload()
+					});
+				} else {
+					Swal.fire('Gagal !', response.message, 'error')
+				}
+			}
+		});
+	})
 	$("#form-hapus-kontrak").submit(function (e) {
 		e.preventDefault();
 		$.ajax({
@@ -777,6 +818,37 @@ $(document).ready(function () {
 			},
 		});
 	});
+	$("#table-realisasi").on("click", "#btn-edit-realisasi", function () {
+		var id = $(this).closest("tr").find("#btn-hapus-realisasi").data("id");
+		var file = $(this).closest("tr").find("#btn-hapus-realisasi").data("file");
+		$("#editRealisasiModal").modal("show");
+	});
+	$("#table-realisasi").on("click", "#btn-hapus-realisasi", function () {
+		var id = $(this).closest("tr").find("#btn-hapus-realisasi").data("id");
+		var file = $(this).closest("tr").find("#btn-hapus-realisasi").data("file");
+		$("#delRealisasiModal").modal("show");
+		$("#id-del-realisasi").val(id);
+		$("#file-realisasi").val(file);
+	});
+	$("#form-hapus-realisasi").submit(function (e) {
+		e.preventDefault();
+		$.ajax({
+			url: "destroy_realisasi",
+			type: "post",
+			data: $(this).serialize(),
+			dataType: "json",
+			success: function (res) {
+				if (res.status == "sukses") {
+					$("#delRealisasiModal").modal("hide");
+					Swal.fire("Sukses !", res.pesan, "success").then(() => {
+						location.reload();
+					});
+				} else {
+					Swal.fire("Gagal !", res.pesan, "error");
+				}
+			},
+		});
+	});
 
 	// fisik
 	$("#btn-add-fisik").click(function () {
@@ -785,6 +857,56 @@ $(document).ready(function () {
 	$("#addfisikModal").on("shown.bs.modal", function () {
 		$("#pekerjaan").select2({
 			dropdownParent: $(this),
+		});
+	});
+	$('#form-fisik').submit(function (e) {
+		e.preventDefault();
+		$.ajax({
+			url: 'store_fisik',
+			type: 'POST',
+			data: $(this).serialize(),
+			dataType: 'json',
+			success: function (response) {
+				if (response.status == 'error') {
+					Swal.fire('Peringatan !', response.pesan, 'warning');
+				} else if (response.status == 'sukses') {
+					$("#addfisikModal").modal('hide');
+					Swal.fire('Sukses !', response.pesan, 'success').then(function () {
+						location.reload();
+					});
+				} else {
+					Swal.fire('Error !', response.pesan, 'error');
+				}
+			}
+		})
+	});
+	$('#form-detil-fisik .select2').select2();
+
+	// Detil Fisik
+	$('#table-detil-fisik').on('click', '#btn-edit', function () {
+		var id = $(this).closest('tr').find('#btn-edit').data('id');
+		var bulan = $(this).closest('tr').find('#btn-edit').data('bulan');
+		$('#editModal').modal('show');
+		$('#id-progres-detil').val(id);
+		$('#bulan-edit-detil').val(bulan);
+	});
+	$('#form-edit-detil-fisik').submit(function (e) {
+		e.preventDefault();
+		$.ajax({
+			url: 'update_detil_fisik',
+			method: 'POST',
+			data: $(this).serialize(),
+			dataType: 'JSON',
+			success: function (response) {
+				if (response.status == 'sukses') {
+					Swal.fire('Sukses', response.pesan, 'success').then(function () {
+						location.reload()
+					})
+				} else {
+					Swal.fire('Gagal !', response.pesan, 'error')
+				}
+
+			}
 		});
 	});
 
@@ -851,32 +973,6 @@ $(document).ready(function () {
 			dataType: "json",
 			success: function (res) {
 				if (res.status == "sukses") {
-					Swal.fire("Sukses !", res.pesan, "success").then(() => {
-						location.reload();
-					});
-				} else {
-					Swal.fire("Gagal !", res.pesan, "error");
-				}
-			},
-		});
-	});
-	$("#table-realisasi").on("click", "#btn-hapus-realisasi", function () {
-		var id = $(this).closest("tr").find("#btn-hapus-realisasi").data("id");
-		var file = $(this).closest("tr").find("#btn-hapus-realisasi").data("file");
-		$("#delRealisasiModal").modal("show");
-		$("#id-del-realisasi").val(id);
-		$("#file-realisasi").val(file);
-	});
-	$("#form-hapus-realisasi").submit(function (e) {
-		e.preventDefault();
-		$.ajax({
-			url: "destroy_realisasi",
-			type: "post",
-			data: $(this).serialize(),
-			dataType: "json",
-			success: function (res) {
-				if (res.status == "sukses") {
-					$("#delRealisasiModal").modal("hide");
 					Swal.fire("Sukses !", res.pesan, "success").then(() => {
 						location.reload();
 					});
@@ -1176,68 +1272,67 @@ $(document).ready(function () {
 			},
 		},
 	});
+	$("#table-fisik").DataTable({
+		language: {
+			sEmptyTable: "Tidak ada data yang tersedia pada tabel ini",
+			sProcessing: "Sedang memproses...",
+			sLengthMenu: "Tampilkan _MENU_ data",
+			sZeroRecords: "Tidak ditemukan data yang sesuai",
+			sInfo: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+			sInfoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
+			sInfoFiltered: "(disaring dari _MAX_ data keseluruhan)",
+			sInfoPostFix: "",
+			sSearch: "Cari:",
+			sUrl: "",
+			oPaginate: {
+				sFirst: "Pertama",
+				sPrevious: "&lt",
+				sNext: "&gt",
+			},
+		},
+	});
+	$("#ttable-detil-fisik").DataTable({
+		language: {
+			sEmptyTable: "Tidak ada data yang tersedia pada tabel ini",
+			sProcessing: "Sedang memproses...",
+			sLengthMenu: "Tampilkan _MENU_ data",
+			sZeroRecords: "Tidak ditemukan data yang sesuai",
+			sInfo: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+			sInfoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
+			sInfoFiltered: "(disaring dari _MAX_ data keseluruhan)",
+			sInfoPostFix: "",
+			sSearch: "Cari:",
+			sUrl: "",
+			oPaginate: {
+				sFirst: "Pertama",
+				sPrevious: "&lt",
+				sNext: "&gt",
+			},
+		},
+	});
+	$("#table-penugasan").DataTable({
+		language: {
+			sEmptyTable: "Tidak ada data yang tersedia pada tabel ini",
+			sProcessing: "Sedang memproses...",
+			sLengthMenu: "Tampilkan _MENU_ data",
+			sZeroRecords: "Tidak ditemukan data yang sesuai",
+			sInfo: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+			sInfoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
+			sInfoFiltered: "(disaring dari _MAX_ data keseluruhan)",
+			sInfoPostFix: "",
+			sSearch: "Cari:",
+			sUrl: "",
+			oPaginate: {
+				sFirst: "Pertama",
+				sPrevious: "&lt",
+				sNext: "&gt",
+			},
+		},
+	});
 
 	// tooltip
 	$("body").tooltip({
 		selector: '[data-toggle="tooltip"]',
-	});
-
-	/* graph */
-	Highcharts.chart("chart", {
-		title: {
-			text: "Realisasi Fisik dan Keuangan Dana Otsus Aceh Kabupaten Aceh Barat",
-		},
-		subtitle: {
-			text: "Sumber: Dinas PUPR Kab. Aceh Barat",
-		},
-		yAxis: {
-			title: {
-				text: "% Realisasi",
-			},
-		},
-		xAxis: {
-			categories: [
-				"Jan",
-				"Feb",
-				"Mar",
-				"Apr",
-				"May",
-				"Jun",
-				"Jul",
-				"Aug",
-				"Sep",
-				"Oct",
-				"Nov",
-				"Dec",
-			],
-		},
-		legend: {
-			layout: "vertical",
-			align: "right",
-			verticalAlign: "middle",
-		},
-		plotOptions: {
-			line: {
-				dataLabels: {
-					enabled: true,
-				},
-				enableMouseTracking: true,
-			},
-		},
-		series: [
-			{
-				name: "Jembatan",
-				data: [
-					7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6,
-				],
-			},
-			{
-				name: "Jalan",
-				data: [
-					3.9, 4.2, 8.7, 8.5, 11.9, 23.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8,
-				],
-			},
-		],
 	});
 
 	/**

@@ -4916,4 +4916,17 @@ label.tree_label:after { border-bottom: 0; }
   border-radius: 0.3em;
 }
 
+fieldset {
+	border: 1px solid lightgray;
+	padding: 30px;
+	border-radius: 10px;
+	background-color: #DCf6D7;
+	box-sizing: content-box;
+}
+
+.highcharts-tooltip table th {
+	padding-bottom: 0.2em;
+	border-bottom: 1px solid silver;
+}
+
 /*# sourceMappingURL=app.min.css.map */

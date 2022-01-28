@@ -44,7 +44,7 @@
 						</div>
 
 						<div class="mt-2 table-responsive">
-							<table class="table table-bordered" id="table-realisasi">
+							<table class="table table-bordered table-hover" id="table-realisasi">
 								<thead>
 									<tr>
 										<th class="text-center" width=5%>No</th>
@@ -74,7 +74,8 @@
 													<img src="<?= base_url() ?>assets/admin/images/pdf.png" alt="pdf" width="40px">
 												</a>
 											</td>
-											<td class="text-center" width="10%">
+											<td class="text-center" width="10%" nowrap>
+												<button class="btn btn-sm btn-warning" id="btn-edit-realisasi" data-id="<?= $k->id ?>" data-file="<?= $k->dokumen ?>">Edit</button>
 												<button class="btn btn-sm btn-danger" id="btn-hapus-realisasi" data-id="<?= $k->id ?>" data-file="<?= $k->dokumen ?>">Hapus</button>
 											</td>
 										</tr>
@@ -178,6 +179,102 @@
 					</button>
 				</div>
 			</form>
+		</div>
+	</div>
+</div>
+
+<!-- Modal edit -->
+<div class="modal fade" id="editRealisasiModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="modalRealisasiTitle">Edit Realisasi Keuangan (Input SP2D)</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<!--<form id="form-realisasi" enctype="multipart/form-data">
+				<div class="modal-body">
+					<div class="form-group row">
+						<label for="" class="col-form-label col-md-3">Uraian Pekerjaan</label>
+						<div class="col-md-9">
+							<select name="uraian" id="uraian-realisasi" class="form-control" style="width: 100%">
+								<option value="">--Pilih--</option>
+								<?php /*foreach ($pekerjaan as $k) : */?>
+									<option value="<?/*= $k->id */?>"><?/*= $k->uraian_pekerjaan */?></option>
+								<?php /*endforeach; */?>
+							</select>
+							<input type="hidden" class="form-control" id="nilai-kontrak">
+							<input type="hidden" class="form-control" id="nilai-pagu">
+						</div>
+					</div>
+					<br>
+					<div class="form-group row">
+						<label for="" class="col-form-label col-md-3">Jumlah SP2D</label>
+						<div class="col-md-9">
+							<div class="input-group">
+								<span class="input-group-text">Rp.</span>
+								<input type="text" class="form-control" id="progress" name="nilai" data-mask="000.000.000.000.000" data-mask-reverse="true">
+							</div>
+						</div>
+					</div>
+					<br>
+					<div class="form-group row">
+						<label for="" class="col-form-label col-md-3">Nomor</label>
+						<div class="col-md-9">
+							<div class="input-group">
+								<span class="input-group-text">No</span>
+								<input type="text" class="form-control" id="nomor" name="nomor">
+							</div>
+						</div>
+					</div>
+					<br>
+					<div class="form-group row">
+						<label for="" class="col-form-label col-md-3">Tanggal</label>
+						<div class="col-md-9">
+							<div class="input-group">
+								<span class="input-group-text">Tanggal</span>
+								<input type="date" class="form-control" id="tanggal" name="tanggal">
+							</div>
+						</div>
+					</div>
+					<br>
+					<div class="form-group row">
+						<label for="" class="col-form-label col-md-3">Dokumen</label>
+						<div class="col-md-9">
+							<input type="file" class="form-control" name="dokumen">
+						</div>
+					</div>
+					<br>
+					<div class="form-group row">
+						<label for="" class="col-form-label col-md-3">Persen Kontrak</label>
+						<div class="col-md-3">
+							<div class="input-group">
+								<input type="text" class="form-control" id="persentase" name="persen_kontrak" readonly>
+								<span class="input-group-text">%</span>
+							</div>
+						</div>
+					</div>
+					<br>
+					<div class="form-group row">
+						<label for="" class="col-form-label col-md-3">Persen Pagu</label>
+						<div class="col-md-3">
+							<div class="input-group">
+								<input type="text" class="form-control" id="persentase2" name="persen_pagu" readonly>
+								<span class="input-group-text">%</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>-->
+			<div class="modal-body">
+				Sedang disiapkan, segera tersedia...
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Batal
+				</button>
+				<button type="submit" class="btn btn-primary waves-effect waves-light" id="btn-submit-realisasi">
+					Update
+				</button>
+			</div>
 		</div>
 	</div>
 </div>

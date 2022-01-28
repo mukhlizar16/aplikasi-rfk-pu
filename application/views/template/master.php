@@ -123,7 +123,7 @@
 						</div>
 						<div class="col-sm-6">
 							<div class="text-sm-end d-none d-sm-block">
-								Developed <i class="mdi mdi-heart text-danger"></i> by CV.DONKIB
+								Rendered in <?= $this->benchmark->elapsed_time() ?>s
 							</div>
 						</div>
 					</div>
