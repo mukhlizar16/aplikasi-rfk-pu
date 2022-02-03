@@ -292,6 +292,7 @@ class Admin_model extends CI_Model
 		$this->db->join('jenis_pengadaan as j', 'j.id = g.jenis_id', 'LEFT');
 		$this->db->join('satuan as t', 't.id = g.satuan_id', 'LEFT');
 		$this->db->join('jenis_belanja as jb', 'jb.id = g.belanja_id', 'LEFT');
+		$this->db->order_by('p.nama_program', 'ASC');
 		return $this->db->get();
 	}
 
@@ -915,5 +916,17 @@ class Admin_model extends CI_Model
 			WHERE subkegiatan_id = ' . $subkegiatan . '
 			GROUP BY subkegiatan_id
 		');
+	}
+
+	public function get_kegiatan_pagu($id)
+	{
+		$this->db->where('program_id', $id);
+		return $this->db->get('kegiatan');
+	}
+
+	public function get_subkegiatan_pagu($id)
+	{
+		$this->db->where('kegiatan_id', $id);
+		return $this->db->get('subkegiatan');
 	}
 }

@@ -11,7 +11,7 @@
 		"source": "https://github.com/bcit-ci/CodeIgniter"
 	},
 	"require": {
-		"php": ">=7.2",
+		"php": ">=7.4",
 		"igorescobar/jquery-mask-plugin": "^1.14",
 		"phpoffice/phpspreadsheet": "^1.21"
 	},

@@ -4,55 +4,36 @@
 			<div class="col-lg-12">
 				<div class="card">
 					<div class="card-body">
-						<div class="mb-3">
-							<button class="btn btn-primary" id="btn-add-pagu">Tambah Data
-							</button>
+						<div class="d-flex justify-content-between">
+							<button class="btn btn-primary" id="btn-add-pagu">Tambah Data</button>
+
+							<a href="<?= site_url('export') ?>" target="_blank" class="btn btn-success waves-effect"><i class="mdi mdi-file-excel"></i> Excel</a>
 						</div>
 
-						<div class="mt-2 table-responsive">
+						<div class="mt-5 table-responsive">
 							<table class="table display table-striped table-bordered" id="tabel-pagu">
 								<thead>
-								<tr>
-									<th style="text-align: center; vertical-align: middle" width="5%">No</th>
-									<th style="vertical-align: middle">Program</th>
-									<th style="vertical-align: middle">Kegiatan</th>
-									<th style="vertical-align: middle">Sub Kegiatan</th>
-									<th>Uraian Pekerjaan</th>
-									<th style="vertical-align: middle">Lokasi</th>
-									<th style="text-align: center;vertical-align: middle">Volume</th>
-									<th style="text-align: center;vertical-align: middle">Satuan</th>
-									<th style="text-align: center;vertical-align: middle">Pagu</th>
-									<th style="text-align: center;vertical-align: middle">Jenis</th>
-									<th style="text-align: center;vertical-align: middle">Sumber Dana</th>
-									<th style="text-align: center;vertical-align: middle">Aksi</th>
-								</tr>
+									<tr>
+										<th style="text-align: center; vertical-align: middle" width="5%">No</th>
+										<th style="vertical-align: middle">Program</th>
+										<th style="vertical-align: middle">Kegiatan</th>
+										<th style="vertical-align: middle">Sub Kegiatan</th>
+										<th>Uraian Pekerjaan</th>
+										<th style="vertical-align: middle">Lokasi</th>
+										<th style="text-align: center;vertical-align: middle">Volume</th>
+										<th style="text-align: center;vertical-align: middle">Satuan</th>
+										<th style="text-align: center;vertical-align: middle">Pagu</th>
+										<th style="text-align: center;vertical-align: middle">Jenis</th>
+										<th style="text-align: center;vertical-align: middle">Sumber Dana</th>
+										<th style="text-align: center;vertical-align: middle">Aksi</th>
+									</tr>
 								</thead>
 								<tbody>
-								<!-- start looping program -->
-								<?php
-								?>
-								<tr>
-									<td colspan="2"><b class="text-primary">Dinas PUPR</b></td>
-									<td colspan="10"><strong
-												class="text-primary"><?= rupiah($anggaran->jumlah) ?></strong></td>
-									<td style="display: none"></td>
-									<td style="display: none"></td>
-									<td style="display: none"></td>
-									<td style="display: none"></td>
-									<td style="display: none"></td>
-									<td style="display: none"></td>
-									<td style="display: none"></td>
-									<td style="display: none"></td>
-									<td style="display: none"></td>
-									<td style="display: none"></td>
-								</tr>
-								<?php
-								$i = 1;
-								foreach ($total as $t) : ?>
+									<!-- start looping program -->
 									<tr>
-										<td style="font-weight: bold"><?= get_abjad($i++) ?></td>
-										<td style="font-weight: bold"><?= $t->nm_p ?></td>
-										<td style="font-weight: bold" colspan="10"><?= rupiah($t->sum) ?></td>
+										<td colspan="2"><b class="text-primary">Dinas PUPR</b></td>
+										<td colspan="10"><strong class="text-primary"><?= rupiah($anggaran->jumlah) ?></strong></td>
+										<td style="display: none"></td>
 										<td style="display: none"></td>
 										<td style="display: none"></td>
 										<td style="display: none"></td>
@@ -63,38 +44,53 @@
 										<td style="display: none"></td>
 										<td style="display: none"></td>
 									</tr>
-									<!-- start item -->
-									<?php $no = 1;
-									foreach ($pagu as $p) : ?>
-										<?php if ($p['id_program'] == $t->id_program) : ?>
-											<tr>
-												<td><?= $no++ ?></td>
-												<td><?= $p['nm_p'] ?></td>
-												<td><?= $p['nm_k'] ?></td>
-												<td><?= $p['nama_sub'] ?></td>
-												<td><?= $p['pekerjaan'] ?></td>
-												<td class="text-center"><?= $p['lokasi'] ?></td>
-												<td style="text-align: center"><?= $p['volume'] ?></td>
-												<td style="text-align: center"><?= $p['satuan'] ?></td>
-												<td nowrap><?= rupiah($p['pagu']) ?></td>
-												<td><?= $p['jenis'] ?></td>
-												<td><?= $p['belanja'] ?></td>
-												<td nowrap>
-													<button class="btn btn-warning btn-sm" id="btn-edit"
-															data-id="<?= $p['id'] ?>">
-														<i class="fa fa-pencil-alt"></i>
-													</button>
-													<button class="btn btn-danger btn-sm" id="btn-hapus"
-															data-id="<?= $p['id'] ?>">
-														<i class="fa fa-trash-alt"></i>
-													</button>
-												</td>
-											</tr>
-										<?php endif; ?>
+									<?php
+									$i = 1;
+									foreach ($total as $t) : ?>
+										<tr>
+											<td style="font-weight: bold"><?= get_abjad($i++) ?></td>
+											<td style="font-weight: bold"><?= $t->nm_p ?></td>
+											<td style="font-weight: bold" colspan="10"><?= rupiah($t->sum) ?></td>
+											<td style="display: none"></td>
+											<td style="display: none"></td>
+											<td style="display: none"></td>
+											<td style="display: none"></td>
+											<td style="display: none"></td>
+											<td style="display: none"></td>
+											<td style="display: none"></td>
+											<td style="display: none"></td>
+											<td style="display: none"></td>
+										</tr>
+										<!-- start item -->
+										<?php $no = 1;
+										foreach ($pagu as $p) : ?>
+											<?php if ($p['id_program'] == $t->id_program) : ?>
+												<tr>
+													<td><?= $no++ ?></td>
+													<td><?= $p['nm_p'] ?></td>
+													<td><?= $p['nm_k'] ?></td>
+													<td><?= $p['nama_sub'] ?></td>
+													<td><?= $p['pekerjaan'] ?></td>
+													<td class="text-center"><?= $p['lokasi'] ?></td>
+													<td style="text-align: center"><?= $p['volume'] ?></td>
+													<td style="text-align: center"><?= $p['satuan'] ?></td>
+													<td nowrap><?= rupiah($p['pagu']) ?></td>
+													<td><?= $p['jenis'] ?></td>
+													<td><?= $p['belanja'] ?></td>
+													<td nowrap>
+														<button class="btn btn-warning btn-sm" id="btn-edit" data-id="<?= $p['id'] ?>">
+															<i class="fa fa-pencil-alt"></i>
+														</button>
+														<button class="btn btn-danger btn-sm" id="btn-hapus" data-id="<?= $p['id'] ?>">
+															<i class="fa fa-trash-alt"></i>
+														</button>
+													</td>
+												</tr>
+											<?php endif; ?>
+										<?php endforeach; ?>
+										<!-- end item -->
 									<?php endforeach; ?>
-									<!-- end item -->
-								<?php endforeach; ?>
-								<!-- end looping program -->
+									<!-- end looping program -->
 								</tbody>
 							</table>
 						</div>
@@ -106,8 +102,7 @@
 </div>
 
 <!-- Modal tambah -->
-<div class="modal fade" id="tambahPaguModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-	 aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="tambahPaguModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -192,8 +187,8 @@
 						<div class="col-md-9">
 							<select name="tahun_pagu" id="tahun-pagu" class="form-control">
 								<option value="">--Pilih--</option>
-								<?php for($i = date('Y'); $i >= 2020; $i--) : ?>
-								<option value="<?= $i ?>"><?= $i ?></option>
+								<?php for ($i = date('Y'); $i >= 2020; $i--) : ?>
+									<option value="<?= $i ?>"><?= $i ?></option>
 								<?php endfor; ?>
 							</select>
 						</div>
@@ -227,7 +222,7 @@
 						<div class="col-md-9">
 							<select name="belanja" id="belanja" class="form-control">
 								<option value="">--Pilih--</option>
-								<?php foreach ($optlabel as $opt): ?>
+								<?php foreach ($optlabel as $opt) : ?>
 									<optgroup label="<?= $opt->nama ?>">
 										<?php foreach ($options as $option) : ?>
 											<?php if ($opt->id == $option->parent_id) : ?>
@@ -251,8 +246,7 @@
 </div>
 
 <!-- Modal edit -->
-<div class="modal fade" id="editPaguModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-	 aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="editPaguModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -310,7 +304,7 @@
 						<div class="col-md-9">
 							<select name="tahun_pagu" id="edit-tahun-pagu" class="form-control">
 								<option value="">--Pilih--</option>
-								<?php for($i = date('Y'); $i >= 2020; $i--) : ?>
+								<?php for ($i = date('Y'); $i >= 2020; $i--) : ?>
 									<option value="<?= $i ?>"><?= $i ?></option>
 								<?php endfor; ?>
 							</select>
@@ -345,7 +339,7 @@
 						<div class="col-md-9">
 							<select name="belanja" id="edit-belanja" class="form-control">
 								<option value="">--Pilih--</option>
-								<?php foreach ($optlabel as $opt): ?>
+								<?php foreach ($optlabel as $opt) : ?>
 									<optgroup label="<?= $opt->nama ?>">
 										<?php foreach ($options as $option) : ?>
 											<?php if ($opt->id == $option->parent_id) : ?>
@@ -369,8 +363,7 @@
 </div>
 
 <!-- Modal hapus -->
-<div class="modal fade" id="hapusPaguModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-	 aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="hapusPaguModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
