@@ -284,7 +284,7 @@ class Admin_model extends CI_Model
 		$this->db->select('g.id as id, p.id as id_program, p.kode_program as kode_program, p.nama_program as nm_p, k.kode_kegiatan as kode_k, k.nama_kegiatan as nm_k,
 							s.kode_subkegiatan as kode_sub, s.nama_subkegiatan as nama_sub, g.uraian_pekerjaan as pekerjaan,
 							g.lokasi as lokasi, g.volume as volume, t.nama_satuan as satuan, g.pagu as pagu, g.tanggal as tanggal, 
-							j.nama_jenis as jenis, jb.nama as belanja');
+							j.nama_jenis as jenis, jb.nama as belanja, g.sumber as sumber');
 		$this->db->from('pagu as g');
 		$this->db->join('subkegiatan as s', 's.id = g.subkegiatan_id', 'LEFT');
 		$this->db->join('kegiatan as k', 'k.id = s.kegiatan_id', 'LEFT');

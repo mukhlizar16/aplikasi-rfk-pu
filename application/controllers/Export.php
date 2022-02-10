@@ -132,6 +132,8 @@ class Export extends CI_Controller
 		// ambil data dari database
 		$anggaran = $this->Admin_model->total_anggaran_pagu()->row();
 		$datas = $this->Admin_model->show_pagu_data()->result_array();
+		// print_r($datas);
+		// die();
 
 		$no = 1; // Untuk penomoran tabel, di awal set dengan 1
 		$numrow = 5; // Set baris pertama untuk isi tabel adalah baris ke 4
@@ -156,7 +158,7 @@ class Export extends CI_Controller
 			$excel->setActiveSheetIndex(0)->setCellValue('H' . $numrow, $data['satuan']);
 			$excel->setActiveSheetIndex(0)->setCellValue('I' . $numrow, $data['pagu']);
 			$excel->setActiveSheetIndex(0)->setCellValue('J' . $numrow, $data['jenis']);
-			$excel->setActiveSheetIndex(0)->setCellValue('K' . $numrow, $data['belanja']);
+			$excel->setActiveSheetIndex(0)->setCellValue('K' . $numrow, $data['sumber']);
 
 			// Apply style row yang telah kita buat tadi ke masing-masing baris (isi tabel)
 			$excel->getActiveSheet()->getStyle('A' . $numrow)->applyFromArray($style_row);
@@ -169,7 +171,7 @@ class Export extends CI_Controller
 			$excel->getActiveSheet()->getStyle('H' . $numrow)->applyFromArray($middle);
 			$excel->getActiveSheet()->getStyle('I' . $numrow)->applyFromArray($style_row)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_CURRENCY_RP);
 			$excel->getActiveSheet()->getStyle('J' . $numrow)->applyFromArray($middle);
-			$excel->getActiveSheet()->getStyle('K' . $numrow)->applyFromArray($style_row)->getAlignment()->setWrapText(true);
+			$excel->getActiveSheet()->getStyle('K' . $numrow)->applyFromArray($middle);
 
 			$no++;
 			$numrow++;
