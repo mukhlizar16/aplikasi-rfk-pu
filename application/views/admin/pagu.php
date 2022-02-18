@@ -25,6 +25,7 @@
 										<th style="text-align: center;vertical-align: middle">Pagu</th>
 										<th style="text-align: center;vertical-align: middle">Jenis</th>
 										<th style="text-align: center;vertical-align: middle">Sumber Dana</th>
+										<th style="text-align: center;vertical-align: middle">Jenis Belanja</th>
 										<th style="text-align: center;vertical-align: middle">Aksi</th>
 									</tr>
 								</thead>
@@ -32,7 +33,8 @@
 									<!-- start looping program -->
 									<tr>
 										<td colspan="2"><b class="text-primary">Dinas PUPR</b></td>
-										<td colspan="10"><strong class="text-primary"><?= rupiah($anggaran->jumlah) ?></strong></td>
+										<td colspan="11"><strong class="text-primary"><?= rupiah($anggaran->jumlah) ?></strong></td>
+										<td style="display: none"></td>
 										<td style="display: none"></td>
 										<td style="display: none"></td>
 										<td style="display: none"></td>
@@ -50,7 +52,8 @@
 										<tr>
 											<td style="font-weight: bold"><?= get_abjad($i++) ?></td>
 											<td style="font-weight: bold"><?= $t->nm_p ?></td>
-											<td style="font-weight: bold" colspan="10"><?= rupiah($t->sum) ?></td>
+											<td style="font-weight: bold" colspan="11"><?= rupiah($t->sum) ?></td>
+											<td style="display: none"></td>
 											<td style="display: none"></td>
 											<td style="display: none"></td>
 											<td style="display: none"></td>
@@ -76,6 +79,7 @@
 													<td style="text-align: center"><?= $p['satuan'] ?></td>
 													<td nowrap><?= rupiah($p['pagu']) ?></td>
 													<td><?= $p['jenis'] ?></td>
+													<td class="text-center"><?= $p['sumber'] ?></td>
 													<td><?= $p['belanja'] ?></td>
 													<td nowrap>
 														<button class="btn btn-warning btn-sm" id="btn-edit" data-id="<?= $p['id'] ?>">
