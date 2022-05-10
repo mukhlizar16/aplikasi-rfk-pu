@@ -38,6 +38,7 @@
 							<li><a href="<?= site_url('admin/program') ?>">Program</a></li>
 							<li><a href="<?= site_url('admin/kegiatan') ?>">Kegiatan</a></li>
 							<li><a href="<?= site_url('admin/subkegiatan') ?>">Sub Kegiatan</a></li>
+							<li><a href="<?= site_url('admin/jenis_belanja') ?>">Jenis Belanja</a></li>
 							<li><a href="<?= site_url('admin/satuan') ?>">Satuan</a></li>
 							<li><a href="<?= site_url('admin/user_list') ?>">User</a></li>
 							<li><a href="<?= site_url('admin/sektor') ?>">Sektor</a></li>

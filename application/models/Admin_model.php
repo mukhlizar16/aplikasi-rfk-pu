@@ -882,12 +882,12 @@ class Admin_model extends CI_Model
 
 	public function show_jenis_belanja_parent()
 	{
-		return $this->db->query('SELECT id, nama, parent_id FROM jenis_belanja WHERE parent_id IS NULL');
+		return $this->db->query('SELECT id, akun, nama, parent_id FROM jenis_belanja WHERE parent_id IS NULL');
 	}
 
 	public function show_jenis_belanja_child()
 	{
-		return $this->db->query('SELECT id, nama, parent_id FROM jenis_belanja WHERE parent_id IS NOT NULL');
+		return $this->db->query('SELECT id, akun, nama, parent_id FROM jenis_belanja WHERE parent_id IS NOT NULL');
 	}
 
 	public function show_jenisbelanja_child()
@@ -895,8 +895,10 @@ class Admin_model extends CI_Model
 		return $this->db->query('
 								SELECT
 									p.id as id_parent,
+									p.akun as akun_parent,
 									p.nama as parent_name,
 									c.id as child_id,
+									c.akun as akun_child,
 									c.nama as child_name
 								FROM 
 									jenis_belanja p
@@ -928,5 +930,10 @@ class Admin_model extends CI_Model
 	{
 		$this->db->where('kegiatan_id', $id);
 		return $this->db->get('subkegiatan');
+	}
+
+	public function store_jenis_belanja($data)
+	{
+		return $this->db->insert('jenis_belanja', $data);
 	}
 }

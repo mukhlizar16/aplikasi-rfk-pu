@@ -258,6 +258,47 @@ class Admin extends CI_Controller
 		}
 	}
 
+	public function jenis_belanja()
+	{
+		$data = [
+			'title' => 'Admin - List Jenis Belanja',
+			'breadcrumb' => 'Jenis Belanja',
+			'optlabel' => $this->Admin_model->show_jenis_belanja_parent()->result(),
+			'options' => $this->Admin_model->show_jenis_belanja_child()->result(),
+			'item' => $this->Admin_model->show_jenisbelanja_child()->result()
+		];
+		$this->template->load('template/master', 'admin/jenis-belanja', $data, FALSE);
+	}
+
+	public function add_jenis_belanja()
+	{
+		$data = [
+			'akun' => htmlspecialchars($this->input->post('akun', true)),
+			'nama' => htmlspecialchars($this->input->post('deskripsi', true)),
+			'parent_id' => htmlspecialchars($this->input->post('parent', true)),
+			'cretaed_at' => date('Y-m-d H:i:s'),
+			'updated_at' => date('Y-m-d H:i:s')
+		];
+		$simpan = $this->Admin_model->store_jenis_belanja($data);
+		if ($simpan) {
+			$this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">
+				<strong>Berhasil!</strong> Data berhasil disimpan.
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>');
+			redirect('admin/jenis-belanja');
+		} else {
+			$this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				<strong>Gagal!</strong> Data gagal disimpan.
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>');
+			redirect('admin/jenis-belanja');
+		}
+	}
+
 	public function satuan()
 	{
 		$data = [
@@ -304,10 +345,10 @@ class Admin extends CI_Controller
 	{
 		if ($this->input->is_ajax_request()) {
 			$data_user = [
-				'nama'		=> htmlspecialchars($_POST['nama'], true),
-				'email' 	=> htmlspecialchars($_POST['email'], true),
-				'password'	=> password_hash($_POST['password'], PASSWORD_DEFAULT),
-				'pass'		=> htmlspecialchars($_POST['password'], true)
+				'nama' => htmlspecialchars($_POST['nama'], true),
+				'email' => htmlspecialchars($_POST['email'], true),
+				'password' => password_hash($_POST['password'], PASSWORD_DEFAULT),
+				'pass' => htmlspecialchars($_POST['password'], true)
 			];
 			$data_role = ['role_id' => htmlspecialchars($_POST['role'], true)];
 
@@ -441,17 +482,17 @@ class Admin extends CI_Controller
 		if ($this->input->is_ajax_request()) {
 			$array = array('.', ',');
 			$data = [
-				'subkegiatan_id' 	=> $_POST['subkegiatan'],
-				'uraian_pekerjaan' 	=> $_POST['pekerjaan'],
-				'lokasi' 			=> $_POST['lokasi'],
-				'volume' 			=> $_POST['volume'],
-				'satuan_id' 		=> $_POST['satuan'],
-				'pagu' 				=> str_replace($array, '', $_POST['pagu']),
-				'tahun_pagu'		=> $_POST['tahun_pagu'],
-				'jenis_id' 			=> $_POST['jenis'],
-				'sumber' 			=> $_POST['sumber'],
-				'belanja_id' 		=> $_POST['belanja'],
-				'tanggal' 			=> date('Y-m-d H:i:s')
+				'subkegiatan_id' => $_POST['subkegiatan'],
+				'uraian_pekerjaan' => $_POST['pekerjaan'],
+				'lokasi' => $_POST['lokasi'],
+				'volume' => $_POST['volume'],
+				'satuan_id' => $_POST['satuan'],
+				'pagu' => str_replace($array, '', $_POST['pagu']),
+				'tahun_pagu' => $_POST['tahun_pagu'],
+				'jenis_id' => $_POST['jenis'],
+				'sumber' => $_POST['sumber'],
+				'belanja_id' => $_POST['belanja'],
+				'tanggal' => date('Y-m-d H:i:s')
 			];
 			//			var_dump($data);die();
 			$simpan = $this->Admin_model->store_pagu($data);
@@ -559,10 +600,10 @@ class Admin extends CI_Controller
 			$id = $_POST['id'];
 			$cari = $this->Admin_model->data_pagu_awal($id)->row_array();
 			$data = [
-				'program'		=> $cari['program'],
-				'kegiatan' 		=> $cari['kegiatan'],
-				'pagu' 			=> $cari['pagu'],
-				'sub' 			=> $cari['sub'],
+				'program' => $cari['program'],
+				'kegiatan' => $cari['kegiatan'],
+				'pagu' => $cari['pagu'],
+				'sub' => $cari['sub'],
 			];
 
 			echo json_encode($data);
@@ -579,17 +620,17 @@ class Admin extends CI_Controller
 			// var_dump($cari);
 			// die();
 			$data = [
-				'program'		=> $cari['program'],
-				'kegiatan' 		=> $cari['kegiatan'],
-				'pagu' 			=> $cari['pagu'],
-				'sub' 			=> $cari['sub'],
-				'kontrak' 		=> $cari['nilai_kontrak'],
-				'no_kontrak' 	=> $cari['no_kontrak'],
-				'jangka' 		=> $cari['jangka'],
-				'tgl_kontrak'	=> date('Y-m-d', strtotime($cari['tgl_kontrak'])),
-				'tgl_mulai'		=> date('Y-m-d', strtotime($cari['mulai'])),
-				'tgl_selesai' 	=> date('Y-m-d', strtotime($cari['selesai'])),
-				'penyedia' 		=> $cari['penyedia']
+				'program' => $cari['program'],
+				'kegiatan' => $cari['kegiatan'],
+				'pagu' => $cari['pagu'],
+				'sub' => $cari['sub'],
+				'kontrak' => $cari['nilai_kontrak'],
+				'no_kontrak' => $cari['no_kontrak'],
+				'jangka' => $cari['jangka'],
+				'tgl_kontrak' => date('Y-m-d', strtotime($cari['tgl_kontrak'])),
+				'tgl_mulai' => date('Y-m-d', strtotime($cari['mulai'])),
+				'tgl_selesai' => date('Y-m-d', strtotime($cari['selesai'])),
+				'penyedia' => $cari['penyedia']
 			];
 			//			var_dump($data);die();
 
@@ -1067,9 +1108,9 @@ class Admin extends CI_Controller
 			'breadcrumb' => 'Tabel RFK'
 		];
 		$data['dinas'] = $this->Admin_model->count_all_value()->row();
-		$data['program'] = $this->Admin_model->get_program_id()->result();	// program
-		$data['kegiatan'] = $this->Admin_model->get_kegiatan_id()->result();	// kegiatan
-		$data['subkegiatan'] = $this->Admin_model->get_subkegiatan_id()->result();	// subkegiatan
+		$data['program'] = $this->Admin_model->get_program_id()->result();    // program
+		$data['kegiatan'] = $this->Admin_model->get_kegiatan_id()->result();    // kegiatan
+		$data['subkegiatan'] = $this->Admin_model->get_subkegiatan_id()->result();    // subkegiatan
 		$data['item'] = $this->Admin_model->get_data_rfk()->result();
 		$data['keuangan'] = $this->Admin_model->get_keuangan_data()->result();
 		//		$data['fisik'] = $this->Admin_model->get_progres_data()->result();
